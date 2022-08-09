@@ -1,0 +1,19 @@
+import pupperteer from 'puppeteer';
+import artTemplate from "art-template";
+import fs from "fs";
+async function HtmlImg(mode = "", data: any) {
+    fs.mkdirSync(`${__dirname}/../resources/${mode}`, { recursive: true });
+    const html = artTemplate(`${__dirname}/../../src/modular/${mode}/index.html`, data);
+    await fs.writeFile(`${__dirname}/../resources/${mode}/index.html`, html, (err: any) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+    const browser = await pupperteer.launch();
+    const page = await browser.newPage();
+    await page.goto(`file://${__dirname}/../resources/${mode}/index.html`);
+    const img = await page.screenshot({ encoding: "base64" });
+    await browser.close();
+    return img;
+}
+export { HtmlImg };

@@ -8,19 +8,19 @@ const QQbot = createClient(QQc.qq, {
     data_dir: './src/data',
 })
 //密码 or 扫码登陆
-QQbot.on('system.login.qrcode', (e) => {
+QQbot.on('system.login.qrcode', (_e) => {
     process.stdin.once("data", () => {
         QQbot.login();
     });
 }).login(QQc.password)
 //滑块验证提交
-QQbot.on("system.login.slider", function (e) {
+QQbot.on("system.login.slider", function (_e) {
     process.stdin.once("data", (input: string) => {
         QQbot.submitSlider(input);
     });
 });
 //设备锁
-QQbot.on("system.login.device", function (e) {
+QQbot.on("system.login.device", function (_e) {
     process.stdin.once("data", () => {
         this.login();
     });
@@ -36,6 +36,7 @@ QQbot.on("system.online", async () => {
     QQbot.on('message.private.friend', async (event) => {
         await friend(event, QQbot);
     })
+
 });
 
 
