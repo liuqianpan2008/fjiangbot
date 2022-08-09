@@ -1,0 +1,5 @@
+/node_modules
+/lib
+/src/data
+/js
+/src/config/config.ts

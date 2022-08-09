@@ -1,0 +1,11 @@
+{
+    "presets": [ //将preset-env管理插件安装到babel中
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "usage",
+                "corejs": "3"
+            }
+        ]
+    ]
+}
