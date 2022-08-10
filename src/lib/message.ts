@@ -1,4 +1,3 @@
-import fs, { watchFile } from "fs";
 import { Client, GroupMessageEvent, PrivateMessageEvent, Sendable, TextElem } from "oicq";
 import { githelpData } from "./app/help/help";
 import { HtmlImg } from "./puppeteer";

@@ -12,7 +12,8 @@ async function HtmlImg(mode = "", data: any) {
     const browser = await pupperteer.launch();
     const page = await browser.newPage();
     await page.goto(`file://${__dirname}/../resources/${mode}/index.html`);
-    const img = await page.screenshot({ encoding: "base64" });
+    let body = await page.$("#container");
+    let img = await body?.screenshot({ encoding: "base64", type: "jpeg", quality: 100 }) ?? "截图失败";
     await browser.close();
     return img;
 }

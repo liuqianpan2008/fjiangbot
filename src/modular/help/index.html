@@ -7,7 +7,7 @@
     <style>
         @font-face {
             font-family: 'Roboto';
-            src: url("../../../src/modular/help/SourceHanSansSC-Medium.otf") format('opentype');
+            src: url("../../../src/modular/SourceHanSansSC-Medium.otf") format('opentype');
         }
         * {
             margin: 0;
@@ -25,7 +25,7 @@
 
         }
         .head,.foot,.content,.item{
-            box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 1px 1px;
+            box-shadow: 0 0 10px rgb(0, 0, 0);
             border-radius: 10px;
         }
         .head{
@@ -56,9 +56,7 @@
             border: rgba(0, 0, 0, 0.371) 1px solid;
             margin: 0 auto;
             display: flex;
-
             flex-wrap: wrap;
-
         }
         .item{
             width: 31%;
@@ -106,9 +104,13 @@
             filter: blur(5px);
             border-radius: 10px;
         }
+        #container{
+            width: 800px;
+            height: 1000px;
+        }
     </style>
 </head>
-<body>
+<body id="container">
     <div class="head">
         <div class="brbox" style="height: 100px;"></div>
         <div>
