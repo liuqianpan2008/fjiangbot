@@ -1,15 +1,17 @@
-import fs from "fs";
+import fs, { watchFile } from "fs";
 import { Client, GroupMessageEvent, PrivateMessageEvent, Sendable, TextElem } from "oicq";
+import { githelpData } from "./app/help/help";
 import { HtmlImg } from "./puppeteer";
 
 async function friend(event: PrivateMessageEvent, Bot: Client) {
     let cmd = await event.message.find(msg => msg.type === 'text') as TextElem
-    await friendcmd(event, cmd.text, Bot, "#?帮助$", { type: 'image', file: `base64://${await HtmlImg("help", { title: "cs" })}` })
+    await friendcmd(event, cmd.text, Bot, "#?帮助$", { type: 'image', file: `base64://${await HtmlImg("help", await githelpData(Bot))}` })
 }
 async function group(event: GroupMessageEvent, Bot: Client) {
     let cmd = await event.message.find(msg => msg.type === 'text') as TextElem
-    await groupcmd(event, cmd?.text ?? "", Bot, "#?帮助$", { type: 'image', file: `base64://${await HtmlImg("help", { title: "cs" })}` })
+    await groupcmd(event, cmd?.text ?? "", Bot, "#?帮助$", { type: 'image', file: `base64://${await HtmlImg("help", await githelpData(Bot))}` })
 }
+
 function friendcmd(event: PrivateMessageEvent, msg: string, Bot: Client, cod: string, message: Sendable) {
     let cmd: RegExp = new RegExp(cod, "m");
     if (cmd.test(msg)) {
