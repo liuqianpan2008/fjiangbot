@@ -1,6 +1,6 @@
-import { createClient } from 'oicq';
+import { createClient, GroupMessageEvent } from 'oicq';
 import QQc from './config/config';
-import { friend } from './lib/message';
+import { friend, group } from './lib/message';
 const QQbot = createClient(QQc.qq, {
     log_level: QQc.log,
     platform: QQc.platform,
@@ -36,7 +36,7 @@ QQbot.on("system.online", async () => {
     QQbot.on('message.private.friend', async (event) => {
         await friend(event, QQbot);
     })
-
+    QQbot.on('message.group', async (event: GroupMessageEvent) => {
+        await group(event, QQbot);
+    })
 });
-
-

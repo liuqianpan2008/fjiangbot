@@ -4,8 +4,137 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            src: url("../../../src/modular/help/SourceHanSansSC-Medium.otf") format('opentype');
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto';
+        }
+        body{
+            background: #7b4397;
+            background: -webkit-linear-gradient(to right, #dc2430, #7b4397);
+            background: linear-gradient(to right, #dc2430, #7b4397); 
+
+        }
+        .head,.foot,.content,.brbox{
+            width: 98%;
+
+        }
+        .head,.foot,.content,.item{
+            box-shadow: rgba(0, 0, 0, 0.3) 1px 1px 1px 1px;
+            border-radius: 10px;
+        }
+        .head{
+            margin: 0 auto;
+            height: 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgb(16, 15, 15);
+            border-radius: 10px;
+        }
+        .head div span{
+            font-size: 2rem;
+            font-weight: bold;
+            color: rgba(21, 7, 7, 0.762);
+            padding-left: 10px;
+        }
+        .head div span:nth-of-type(2){
+            padding-left: 30px;
+            
+        }
+        .head img{
+            margin-right: 5px;
+            border-radius: 50%;
+        }
+        .content{
+            position: relative;
+            border: rgba(0, 0, 0, 0.371) 1px solid;
+            margin: 0 auto;
+            display: flex;
+
+            flex-wrap: wrap;
+
+        }
+        .item{
+            width: 31%;
+            height: 15%;
+            margin: 5px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            position: relative;
+
+        }
+        .item img{
+            padding:3px;
+            border-radius: 50%;
+        }
+        .item div span{
+            font-weight: bold;
+            color: rgba(21, 7, 7, 0.762);
+        }
+        .item div span:nth-of-type(2){
+            padding-left: 5px;
+            color: rgba(56, 50, 50, 0.512);
+        }
+        .foot{
+            margin: 0 auto;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            color: rgb(16, 15, 15);
+            position: absolute;
+            z-index: 1;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        .foot span{
+            padding-left: 10px;
+        }
+        .brbox{
+            position: absolute;
+            z-index: -1;
+            background:rgba(255, 255, 255, 0.234);
+            filter: blur(5px);
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
-    {{title}}
+    <div class="head">
+        <div class="brbox" style="height: 100px;"></div>
+        <div>
+            <span>枫酱</span><br>
+            <span>V1.0.0</span>
+        </div>
+        <img src="https://img1.baidu.com/it/u=2029513305,2137933177&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=472" width="100">
+    </div>
+    <br>
+    <div class="content">
+        <div class="brbox" style="height: 100%; width: 100%;"></div>
+         <div class="item">
+            <div class="brbox" style="height: 100%; width: 100%;"></div>
+            <img src="https://img1.baidu.com/it/u=2029513305,2137933177&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=472" width="60" >
+            <div>
+                <span>标题</span>
+                <br>
+                <span style="font-size: 1rem;">内容</span>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class='foot'>
+        <div class="brbox" style="height: 100%; width: 100%;"></div>
+        <span style="color: rgba(0, 0, 0, 0.512)">by 枫叶秋林-开源代码切勿商用</span>
+    </div>
+
 </body>
 </html>
