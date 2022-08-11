@@ -1,5 +1,4 @@
 # 目前是一个新坑
-# Inkar Suki
 ![issues](https://img.shields.io/github/issues/liuqianpan2008/fjiangbot)![forks](https://img.shields.io/github/forks/liuqianpan2008/fjiangbot)![stars](https://img.shields.io/github/stars/liuqianpan2008/fjiangbot)![nodejs](https://img.shields.io/badge/nodejs-14%2B-brightgreen)
 
 ### 启动方式

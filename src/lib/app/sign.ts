@@ -1,6 +1,6 @@
 import path from "path"
 import fs from "fs"
-import { signc } from "../../../config/config"
+import { signc } from "../../config/config"
 type signinfo = {
     id: Number,
     Gold: Number,

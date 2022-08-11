@@ -1,7 +1,7 @@
 import { Client, GroupMessageEvent, ImageElem, PrivateMessageEvent, Sendable, TextElem } from "oicq";
 import { signc } from "../config/config";
 import { githelpData } from "./app/help/help";
-import { sign } from "./app/sigm/sign";
+import { sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
 
 async function friend(event: PrivateMessageEvent, Bot: Client) {

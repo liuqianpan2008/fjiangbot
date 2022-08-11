@@ -8,14 +8,14 @@ type dataT = {
 let urlicon = `${path.resolve()}/src/lib/app/help/icon/`
 let data: Array<dataT> = [
     {
-        "name": "功能1",
-        "describe": "功能1描述",
-        "icon": urlicon + "1.jpg",
+        "name": "#签到",
+        "describe": "获取金币的好法子！",
+        "icon": urlicon + "qd.webp",
     },
     {
-        "name": "功能2",
-        "describe": "功能2描述",
-        "icon": urlicon + "1.jpg",
+        "name": "其他功能",
+        "describe": "正在🔥开发中，敬请期待！",
+        "icon": urlicon + "qt.jpg",
     }
 ]
 export { data };
