@@ -24,7 +24,7 @@
             width: 98%;
 
         }
-        .head,.foot,.content,.item{
+        .head,.foot,.item{
             box-shadow: 0 0 10px rgb(0, 0, 0);
             border-radius: 10px;
         }
@@ -34,7 +34,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             border-radius: 10px;
         }
         .head div span{
@@ -53,13 +52,12 @@
         }
         .content{
             position: relative;
-            border: rgba(0, 0, 0, 0.371) 1px solid;
             margin: 0 auto;
             display: flex;
             flex-wrap: wrap;
         }
         .item{
-            width: 31%;
+            width: 32%;
             height: 15%;
             margin: 5px;
             display: flex;
@@ -87,7 +85,6 @@
             align-items: center;
             flex-direction: column;
             justify-content: center;
-
             position: absolute;
             z-index: 1;
             bottom: 0;
@@ -128,7 +125,7 @@
          <div class="item">
             <div class="brbox" style="height: 100%; width: 100%;"></div>
             {{_res_path}}
-            <img src="{{$value.icon}}" width="60" >
+            <img src="{{$value.icon}}" width="60" style="max-width: 60px;">
             <div>
                 <span>{{$value.name}}</span>
                 <br>
