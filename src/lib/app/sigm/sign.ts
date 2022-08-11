@@ -13,8 +13,6 @@ async function sign(id: Number, name: string) {
     let gold = random(signc.MinGold, signc.MaxGold)
     if (isFileExist(`${path.resolve()}/src/data/signdata.json`)) {
         data = JSON.parse(fs.readFileSync(`${path.resolve()}/src/data/signdata.json`, "utf-8").toString()) as unknown as Array<signinfo>
-        console.log(data);
-
         let signinfoi = data.findIndex(item => item.id === id)
         if (signinfoi === -1) {
             data.push({

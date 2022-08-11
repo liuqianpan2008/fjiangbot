@@ -13,8 +13,8 @@ type groupT = {
 }
 type signT = {
     Issign: boolean,
-    MaxGold: String
-    MinGold: String
+    MaxGold: number,
+    MinGold: number
 }
 let QQc: QQcT = {
     qq: 161009029,
@@ -33,8 +33,8 @@ let groupc: Map<number, groupT> = new Map([
 ]);
 let signc: signT = {
     Issign: true,//是否开启签到
-    MaxGold: "10",//最大金币
-    MinGold: "1"//最小金币
+    MaxGold: 10,//最大金币
+    MinGold: 1 //最小金币
 }
 
 export { QQc, groupc, signc };
