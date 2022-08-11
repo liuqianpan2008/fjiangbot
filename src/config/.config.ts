@@ -42,6 +42,7 @@ let groupc: Map<number, groupT> = new Map([
         IsgroupWelcome: true,
         groupWelcomeinfo: "这里是枫酱Bot群，欢迎你的加入",
         Iscurfew: true,//是否开启宵禁
+        // 尽量不要设置同一时间段否则容易🐔
         curfewTime: "0 0 22 ? * ? ",//宵禁开始时间
         curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间
     }],
