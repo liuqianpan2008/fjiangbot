@@ -13,6 +13,11 @@ let data: Array<dataT> = [
         "icon": urlicon + "qd.webp",
     },
     {
+        "name": "#禁@at｜解@at｜ban@at",
+        "describe": "群管功能，请@at",
+        "icon": urlicon + "gl.jpg",
+    },
+    {
         "name": "其他功能",
         "describe": "正在🔥开发中，敬请期待！",
         "icon": urlicon + "qt.jpg",

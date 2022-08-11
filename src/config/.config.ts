@@ -15,6 +15,7 @@ type groupT = {
     Iscurfew: boolean,
     curfewTime: string | number | Date,
     curfewEndTime: string | number | Date,
+    Isadmin: boolean,
 }
 type signT = {
     Issign: boolean,
@@ -33,9 +34,10 @@ let groupc: Map<number, groupT> = new Map([
         IsgroupWelcome: true,
         groupWelcomeinfo: "欢迎使用枫酱Bot-这个可以在config.ts中修改",
         Iscurfew: false,//是否开启宵禁
-        //Cron表达式生成网址https://cron.qqe2.com
-        curfewTime: "0 0 0 23 * ?",//宵禁开始时间 需要Cron表达式
-        curfewEndTime: "0 0 0 7 * ?",//宵禁结束时间 需要Cron表达式
+        //Cron表达式生成网址：https://cron.qqe2.com
+        curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间 需要Cron表达式
+        curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间 需要Cron表达式
+        Isadmin: true,//是否管理员使用群管功能
     }],
     // 单独配置
     [877894787, {
@@ -43,8 +45,9 @@ let groupc: Map<number, groupT> = new Map([
         groupWelcomeinfo: "这里是枫酱Bot群，欢迎你的加入",
         Iscurfew: true,//是否开启宵禁
         // 尽量不要设置同一时间段否则容易🐔
-        curfewTime: "0 0 22 ? * ? ",//宵禁开始时间
+        curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间
         curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间
+        Isadmin: true,
     }],
 ]);
 let signc: signT = {
@@ -52,5 +55,6 @@ let signc: signT = {
     MaxGold: 10,//最大金币
     MinGold: 1//最小金币
 }
+let admins: Array<number> = [2180323481];//管理员QQ号
 
-export { QQc, groupc, signc };
+export { QQc, groupc, signc, admins };
