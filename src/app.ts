@@ -2,6 +2,7 @@ import { createClient, GroupMessageEvent, MemberIncreaseEvent } from 'oicq';
 import { QQc } from './config/config';
 import { groupWelcome } from './lib/app/groupWelcome';
 import { friend, group } from './lib/message';
+import timing from './lib/timing';
 const QQbot = createClient(QQc.qq, {
     log_level: QQc.log,
     platform: QQc.platform,
@@ -32,7 +33,9 @@ QQbot.on("system.login.error", function (e) {
 });
 //监听上线事件
 QQbot.on("system.online", async () => {
+
     QQbot.logger.mark("QQ上线成功")
+    await timing(QQbot);
     // 监听私聊事件
     QQbot.on('message.private.friend', async (event) => {
         await friend(event, QQbot);

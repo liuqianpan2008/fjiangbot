@@ -5,11 +5,11 @@ import { sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
 
 async function friend(event: PrivateMessageEvent, Bot: Client) {
-    let cmd = await event.message.find(msg => msg.type === 'text') as TextElem
+    let cmd = event.message.find(msg => msg.type === 'text') as TextElem
     friendcmd(event, cmd?.text ?? "", Bot)
 }
 async function group(event: GroupMessageEvent, Bot: Client) {
-    let cmd = await event.message.find(msg => msg.type === 'text') as TextElem
+    let cmd = event.message.find(msg => msg.type === 'text') as TextElem
     groupcmd(event, cmd?.text ?? "", Bot)
 }
 
@@ -22,7 +22,6 @@ async function friendcmd(event: PrivateMessageEvent, msg: string, Bot: Client,) 
         if (signc.Issign) {
             event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("sign", await sign(event.friend.user_id, event.nickname))}` })
         }
-
     }
 }
 async function groupcmd(event: GroupMessageEvent, msg: string, Bot: Client) {
