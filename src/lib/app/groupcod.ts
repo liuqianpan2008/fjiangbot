@@ -29,13 +29,17 @@ async function groupCod(event: MemberIncreaseEvent, bot: Client,) {
         })
         //
         schedule.scheduleJob(new Date(new Date().getTime() + (groupc.get(event.group_id)?.IsgroupCodTime as number)), async () => {
-            if (groupFriends.get(event.group_id)?.find(item => item.id === event.user_id)) {
-                bot.logger.info(`用户(${event.user_id})在群（${event.group_id}）验证超时超时准备T`)
-                event.group.pickMember(event.user_id).kick(true)
-                event.group.sendMsg(`用户${event.user_id}验证超时，被T了`)
-                groupFriends.get(event.group_id)?.find(item => item.id === event.user_id)
+            if (groupFriends.get(event.group_id) != null) {
+                if (groupFriends.get(event.group_id)?.find(item => { if (item) { return item.id === event.user_id } else { false } })) {
+                    bot.logger.info(`用户(${event.user_id})在群（${event.group_id}）验证超时超时准备T`)
+                    event.group.pickMember(event.user_id).kick(true)
+                    event.group.sendMsg(`用户${event.user_id}验证超时，被T了`)
+                    groupFriends.get(event.group_id)?.find(item => item.id === event.user_id)
+                }
+
             }
         })
+
     }
     async function addGroupFriendsInfo(event: MemberIncreaseEvent, content: string) {
         return {
