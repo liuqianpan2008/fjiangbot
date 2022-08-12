@@ -10,8 +10,8 @@ type QQcT = {
 // 类型“String”的参数不能赋给类型“string | number | RecurrenceRule | RecurrenceSpecDateRange | RecurrenceSpecObjLit | Date”的参数。
 
 type groupT = {
-    IsgroupWelcome: boolean,
-    groupWelcomeinfo: String,
+    IsgroupCod: boolean,
+    IsgroupCodTime: number,
     Iscurfew: boolean,
     curfewTime: string | number | Date,
     curfewEndTime: string | number | Date,
@@ -30,25 +30,28 @@ let QQc: QQcT = {
 };
 let groupc: Map<number, groupT> = new Map([
     // 默认配置
-    [1, {
-        IsgroupWelcome: true,
-        groupWelcomeinfo: "欢迎使用枫酱Bot-这个可以在config.ts中修改",
-        Iscurfew: false,//是否开启宵禁
-        //Cron表达式生成网址：https://cron.qqe2.com
-        curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间 需要Cron表达式
-        curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间 需要Cron表达式
-        Isadmin: true,//是否管理员使用群管功能
-    }],
-    // 单独配置
-    [877894787, {
-        IsgroupWelcome: true,
-        groupWelcomeinfo: "这里是枫酱Bot群，欢迎你的加入",
-        Iscurfew: true,//是否开启宵禁
-        // 尽量不要设置同一时间段否则容易🐔
-        curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间
-        curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间
-        Isadmin: true,
-    }],
+    [1,
+        {
+            IsgroupCod: true,//是否开启进群验证码
+            IsgroupCodTime: 10000,//单位秒
+            Iscurfew: false,//是否开启宵禁
+            //Cron表达式生成网址：https://cron.qqe2.com
+            curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间 需要Cron表达式
+            curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间 需要Cron表达式
+            Isadmin: true,//是否管理员使用群管功能
+        }],
+    // 单独配置 
+    [877894787,//群号 
+        {
+            IsgroupCod: true,//是否开启进群验证码
+            IsgroupCodTime: 10000,//单位秒
+            Iscurfew: false,//是否开启宵禁
+            // 尽量不要设置同一时间段否则容易🐔
+            curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间
+            curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间
+            Isadmin: true,
+        }
+    ],
 ]);
 let signc: signT = {
     Issign: true,//是否开启签到

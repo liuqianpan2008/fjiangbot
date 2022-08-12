@@ -1,6 +1,6 @@
 import { createClient, GroupMessageEvent, MemberIncreaseEvent } from 'oicq';
 import { QQc } from './config/config';
-import { groupWelcome } from './lib/app/groupWelcome';
+import { groupCod } from './lib/app/groupcod';
 import { friend, group } from './lib/message';
 import timing from './lib/timing';
 const QQbot = createClient(QQc.qq, {
@@ -46,6 +46,6 @@ QQbot.on("system.online", async () => {
     })
     // 监听进群事件
     QQbot.on('notice.group.increase', async (event: MemberIncreaseEvent) => {
-        await groupWelcome(event, QQbot);
+        await groupCod(event, QQbot);
     })
 });

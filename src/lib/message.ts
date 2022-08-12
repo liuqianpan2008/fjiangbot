@@ -1,5 +1,6 @@
 import { AtElem, Client, GroupMessageEvent, ImageElem, MessageElem, PrivateMessageEvent, Sendable, TextElem } from "oicq";
 import { admins, groupc, signc } from "../config/config";
+import { groupFriends } from "./app/groupcod";
 import { githelpData } from "./app/help/help";
 import { sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
@@ -34,7 +35,27 @@ async function groupText(event: GroupMessageEvent, Bot: Client) {
         if (signc.Issign) {
             event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("sign", await sign(event.member.uid, event.nickname))}` })
         }
+    } else if (new RegExp("#?验证(.*)", "m").test(msg?.text ?? "")) {
+        //取右边的内容
+        let yz = msg.text.split("证")[1]
+        //console.log(yz);
+        Bot.logger.info("收到指令：验证码" + yz)
+        if (groupFriends.get(event.group_id)) {
+            let friends = groupFriends.get(event.group_id)
+            if (friends?.find(friend => friend.id === event.member.uid)?.cod == yz) {
+                delete groupFriends.get(event.group_id)?.[friends?.findIndex(friend => friend.id === event.member.uid)]
+                event.group.sendMsg({ type: 'text', text: "验证通过，欢迎来QAQ聊天" })
+                console.log(groupFriends);
+
+            } else {
+                event.group.sendMsg({ type: 'text', text: "验证失败，请重新输入" })
+
+            }
+
+        }
+
     }
+
 }
 async function groupAt(event: GroupMessageEvent, Bot: Client) {
     let msgT = event.message.find(msg => msg.type === 'text') as TextElem
