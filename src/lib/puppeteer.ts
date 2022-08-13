@@ -14,8 +14,6 @@ async function HtmlImg(mode = "", data: any, id: number = 0) {
     });
     const page = await browser.newPage();
     await page.goto(`file://${__dirname}/../resources/${mode}/${id === 0 ? "index" : id}.html`);
-    console.log(`file://${__dirname}/../resources/${mode}/${id === 0 ? "index" : id}.html`);
-
     let body = await page.$("#container");
     let img = await body?.screenshot({ encoding: "base64", type: "jpeg", quality: 100 }) ?? "截图失败";
     await browser.close();

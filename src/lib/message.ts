@@ -1,17 +1,19 @@
-import { AtElem, Client, GroupMessageEvent, ImageElem, MessageElem, PrivateMessageEvent, Sendable, TextElem } from "oicq";
-import { admins, groupc, signc } from "../config/config";
+import { AtElem, Client, Group, GroupMessageEvent, ImageElem, MessageElem, PrivateMessageEvent, Sendable, TextElem } from "oicq";
+import { admins, groupc, groupT, propT, signc } from "../config/config";
 import { groupFriends } from "./app/groupcod";
 import { githelpData } from "./app/help/help";
-import { goods, userinfo } from "./app/shop";
+import { buyshop, goods, userinfo, userprops } from "./app/shop";
 import { sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
 
 async function friend(event: PrivateMessageEvent, Bot: Client) {
     friendText(event, Bot)
+    userpropsf(event, Bot)
 }
 async function group(event: GroupMessageEvent, Bot: Client) {
     groupText(event, Bot)
     groupAt(event, Bot)
+    userpropsg(event, Bot)
 }
 //处理单一文字指令
 async function friendText(event: PrivateMessageEvent, Bot: Client) {
@@ -26,13 +28,16 @@ async function friendText(event: PrivateMessageEvent, Bot: Client) {
         }
     } else if (new RegExp("#?枫酱超市$", "m").test(msg?.text ?? "")) {
         Bot.logger.info("收到指令：" + msg.text)
-        if (signc.Issign) {
-            event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.friend.uid, Bot))}` })
-        }
+        event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.friend.uid, Bot))}` })
     } else if (new RegExp("#?个人仓库$", "m").test(msg?.text ?? "")) {
         Bot.logger.info("收到指令：" + msg.text)
+        event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
+    } else if (new RegExp("#?购买道具(.*)$", "m").test(msg?.text ?? "")) {
+        Bot.logger.info("收到指令：" + msg.text)
         if (signc.Issign) {
-            event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.friend.uid), event.friend.uid), event.friend.uid}` })
+            let goodsid = msg.text.split("具")[1]
+            await event.friend.sendMsg(buyshop(event.sender.user_id, Number(goodsid)))
+            event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
         }
     }
 }
@@ -67,16 +72,17 @@ async function groupText(event: GroupMessageEvent, Bot: Client) {
 
     } else if (new RegExp("#?枫酱超市$", "m").test(msg?.text ?? "")) {
         Bot.logger.info("收到指令：" + msg.text)
-        if (signc.Issign) {
-            event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.sender.user_id, Bot))}` })
-        }
+        event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.sender.user_id, Bot))}` })
     } else if (new RegExp("#?个人仓库$", "m").test(msg?.text ?? "")) {
         Bot.logger.info("收到指令：" + msg.text)
-        if (signc.Issign) {
-            event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
-        }
-    }
+        event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
+    } else if (new RegExp("#?购买道具(.*)$", "m").test(msg?.text ?? "")) {
+        Bot.logger.info("收到指令：" + msg.text)
+        let goodsid = msg.text.split("具")[1]
+        await event.group.sendMsg(buyshop(event.sender.user_id, Number(goodsid)))
+        event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
 
+    }
 }
 async function groupAt(event: GroupMessageEvent, Bot: Client) {
     let msgT = event.message.find(msg => msg.type === 'text') as TextElem
@@ -135,7 +141,38 @@ async function groupAt(event: GroupMessageEvent, Bot: Client) {
         }
     }
 }
-
+// 私聊道具食用
+function userpropsf(event: PrivateMessageEvent, Bot: Client) {
+    let msgT = event.message.find(msg => msg.type === 'text') as TextElem
+}
+// 群聊道具食用
+async function userpropsg(event: GroupMessageEvent, Bot: Client) {
+    let msgT = event.message.find(msg => msg.type === 'text') as TextElem
+    if (new RegExp("#?使用道具(.*)", "m").test(msgT?.text ?? "")) {
+        //取右边的内容
+        let prop = Number(msgT.text.split("道具")[1])
+        let config = (groupc.get(event.group_id) ?? groupc.get(1)) as groupT
+        if (config.props.find(item => item === prop)) {
+            event.group.sendMsg("本群禁止使用该道具")
+            return
+        }
+        if (!prop) {
+            event.group.sendMsg("道具编号错误！")
+            return;
+        }
+        let used = userprops(event.sender.user_id, prop)
+        if (used != -1) {
+            await event.group.sendMsg(`已经使用道具${(used as propT)?.name ?? ""}`)
+            await event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
+            if ((used as propT).type = "jy") {
+                let msgAt = event.message.find(msg => msg.type === 'at') as AtElem
+                event.group.pickMember(msgAt.qq as number).mute(Number((used as propT).effect) ?? 180)
+            }
+        } else {
+            await event.group.sendMsg("道具不存在或者无库存！")
+        }
+    }
+}
 export { friend, group };
 
 
