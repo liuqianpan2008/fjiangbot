@@ -48,4 +48,4 @@ QQbot.on("system.online", async () => {
     QQbot.on('notice.group.increase', async (event: MemberIncreaseEvent) => {
         await groupCod(event, QQbot);
     })
-});
+})

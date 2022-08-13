@@ -2,6 +2,7 @@ import { AtElem, Client, GroupMessageEvent, ImageElem, MessageElem, PrivateMessa
 import { admins, groupc, signc } from "../config/config";
 import { groupFriends } from "./app/groupcod";
 import { githelpData } from "./app/help/help";
+import { goods } from "./app/shop";
 import { sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
 
@@ -22,6 +23,11 @@ async function friendText(event: PrivateMessageEvent, Bot: Client) {
         Bot.logger.info("收到指令：" + msg)
         if (signc.Issign) {
             event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("sign", await sign(event.friend.user_id, event.nickname))}` })
+        }
+    } else if (new RegExp("#?枫酱超市$", "m").test(msg?.text ?? "")) {
+        Bot.logger.info("收到指令：" + msg)
+        if (signc.Issign) {
+            event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.friend.uid, Bot))}` })
         }
     }
 }
@@ -54,6 +60,11 @@ async function groupText(event: GroupMessageEvent, Bot: Client) {
 
         }
 
+    } else if (new RegExp("#?枫酱超市$", "m").test(msg?.text ?? "")) {
+        Bot.logger.info("收到指令：" + msg)
+        if (signc.Issign) {
+            event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.sender.user_id, Bot))}` })
+        }
     }
 
 }
@@ -110,5 +121,7 @@ async function groupAt(event: GroupMessageEvent, Bot: Client) {
 }
 
 export { friend, group };
+
+
 
 

@@ -58,4 +58,4 @@ function random(min: number, max: number) {
 function isFileExist(filePath: string) {
     return fs.existsSync(filePath)
 }
-export { sign }
+export { sign, isFileExist, signinfo }
