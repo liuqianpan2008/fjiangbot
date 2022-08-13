@@ -17,7 +17,7 @@ type groupT = {
     curfewTime: string | number | Date,
     curfewEndTime: string | number | Date,
     Isadmin: boolean,
-    props: Array<propT>,
+    props: Array<Number>,
 }
 type signT = {
     Issign: boolean,
@@ -26,6 +26,7 @@ type signT = {
 }
 type propT = {
     id: number,
+    type: "jy" | "bq" | "cdk",
     name: string,
     price: number,
     effect: any
@@ -46,7 +47,7 @@ let groupc: Map<number, groupT> = new Map([
         curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间 需要Cron表达式
         curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间 需要Cron表达式
         Isadmin: true,//是否管理员使用群管功能
-        props: []//禁用道具
+        props: []//允许使用的道具
     }],
     // 单独配置
     [877894787, {
@@ -57,7 +58,7 @@ let groupc: Map<number, groupT> = new Map([
         curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间
         curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间
         Isadmin: true,
-        props: []//禁用道具
+        props: []//允许使用道具
     }],
 ]);
 let signc: signT = {
@@ -67,20 +68,23 @@ let signc: signT = {
 }
 let admins: Array<number> = [2180323481];//管理员QQ号
 let props: Array<propT> = [{
-    id: 1,//⚠️切勿随意更改⚠️
+    id: 1,
     name: "禁言卡",
+    type: "jy",
     price: 100,
     effect: 60//禁言时常
 }, {
-    id: 2,//⚠️切勿随意更改⚠️
+    id: 2,
     name: "补签卡",
+    type: "bq",
     price: 100,
     effect: ""//
 }, {
-    id: 3,//⚠️切勿随意更改⚠️
-    name: "枫叶群专属兑换卡",
+    id: 3,
+    name: "绿钻cdk",
+    type: "cdk",
     price: 1000,
     effect: ["123456", "123456"]
 
 }]
-export { QQc, groupc, signc, admins, props, };
+export { QQc, groupc, signc, admins, props, propT, groupT };
