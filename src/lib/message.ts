@@ -52,9 +52,7 @@ async function groupText(event: GroupMessageEvent, Bot: Client) {
             event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("sign", await sign(event.member.uid, event.nickname), event.sender.user_id)}` })
         }
     } else if (new RegExp("#?验证(.*)", "m").test(msg?.text ?? "")) {
-        //取右边的内容
         let yz = msg.text.split("证")[1]
-        //console.log(yz);
         Bot.logger.info("收到指令：验证码" + yz)
         if (groupFriends.get(event.group_id)) {
             let friends = groupFriends.get(event.group_id)
@@ -92,35 +90,35 @@ async function groupAt(event: GroupMessageEvent, Bot: Client) {
         Bot.logger.info("收到指令：禁")
         if (
             msgAt &&
-                admins.findIndex(item => { return item === event.member.uid }) != -1 &&
-                event.group.is_admin &&
-                c?.Isadmin ? event.member.is_admin : true &&
-            event.group.pickMember(msgAt.qq as number).is_admin
+            event.group.is_admin &&
+            ((c?.Isadmin ? event.member.is_admin : true) || admins.find(item => { return item === event.member.uid })) &&
+            !event.group.pickMember(msgAt.qq as number).is_admin
         ) {
             let mags = event.message
             mags.splice(mags.findIndex(msg => msg.type === 'at'), 1)
-            if (mags[1]) {
-                await event.group.pickMember(msgAt.qq as number).mute(Number((mags[1] as TextElem).text) ?? 1800)
+            // 去除空格
+            let time = Number((mags[1] as TextElem).text.trim())
+            if (time !== 0) {
+                await event.group.muteMember(msgAt.qq as number, time)
+                await event.group.sendMsg(`已经对${msgAt.text}禁言${time}秒`)
             } else {
-                await event.group.pickMember(msgAt.qq as number).mute()
+                await event.group.muteMember(msgAt.qq as number, 3600)
+                await event.group.sendMsg(`已经对${msgAt.text}禁言${3600}秒`)
             }
-            await event.group.sendMsg(`已经禁言 ${msgAt.qq}`)
+
         } else {
             await event.group.sendMsg("条件不满足")
         }
     }
     if (new RegExp("#?解$", "m").test(msgT?.text ?? "")) {
         Bot.logger.info("收到指令：解")
-
         if (
             msgAt &&
-                admins.findIndex(item => { return item === event.member.uid }) != -1 &&
-                event.group.is_admin &&
-                event.group.pickMember(msgAt.qq as number).mute_left > 0 &&
-                c?.Isadmin ? event.member.is_admin : true
+            event.group.is_admin &&
+            ((c?.Isadmin ? event.member.is_admin : true) || admins.find(item => { return item === event.member.uid }))
         ) {
             await event.group.muteMember(msgAt.qq as number, 0)
-            await event.group.sendMsg(`已经解除 ${msgAt.qq} 的禁言`)
+            await event.group.sendMsg(`已经解除 ${msgAt.text} 的禁言`)
         } else {
             await event.group.sendMsg("条件不满足")
         }
@@ -129,13 +127,16 @@ async function groupAt(event: GroupMessageEvent, Bot: Client) {
         Bot.logger.info("收到指令：ban")
         if (
             msgAt &&
-                admins.findIndex(item => { return item === event.member.uid }) != -1 &&
-                event.group.is_admin &&
-                c?.Isadmin ? event.member.is_admin : true &&
-            event.group.pickMember(msgAt.qq as number).is_admin
+            event.group.is_admin &&
+            ((c?.Isadmin ? event.member.is_admin : true) || admins.find(item => { return item === event.member.uid })) &&
+            !event.group.pickMember(msgAt.qq as number).is_admin
         ) {
-            await event.group.kickMember(msgAt.qq as number, true)
-            await event.group.sendMsg("已经踢出" + msgAt.qq)
+            if (await event.group.kickMember(msgAt.qq as number, true)) {
+                await event.group.sendMsg("已经踢出" + msgAt.qq)
+            } else {
+                await event.group.sendMsg("发生错误，踢出失败！")
+            }
+
         } else {
             await event.group.sendMsg("条件不满足")
         }
@@ -174,7 +175,3 @@ async function userpropsg(event: GroupMessageEvent, Bot: Client) {
     }
 }
 export { friend, group };
-
-
-
-
