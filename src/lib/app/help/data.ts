@@ -13,8 +13,18 @@ let data: Array<dataT> = [
         "icon": urlicon + "qd.webp",
     },
     {
-        "name": "#禁｜解｜ban|@at",
-        "describe": "群管功能",
+        "name": "#枫酱超市",
+        "describe": "购买道具地方",
+        "icon": urlicon + "cs.jpg",
+    },
+    {
+        "name": "#个人仓库",
+        "describe": "查看自己道具",
+        "icon": urlicon + "ck.jpeg",
+    },
+    {
+        "name": "#使用道具1",
+        "describe": "使用对应道具",
         "icon": urlicon + "qt.jpg",
     },
     {
