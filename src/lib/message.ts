@@ -81,7 +81,13 @@ async function groupAt(event: GroupMessageEvent, Bot: Client) {
                 c?.Isadmin ? event.member.is_admin : true &&
             event.group.pickMember(msgAt.qq as number).is_admin
         ) {
-            await event.group.pickMember(msgAt.qq as number).mute(86400)
+            let mags = event.message
+            mags.splice(mags.findIndex(msg => msg.type === 'at'), 1)
+            if (mags[1]) {
+                await event.group.pickMember(msgAt.qq as number).mute(Number((mags[1] as TextElem).text) ?? 1800)
+            } else {
+                await event.group.pickMember(msgAt.qq as number).mute()
+            }
             await event.group.sendMsg(`已经禁言 ${msgAt.qq}`)
         } else {
             await event.group.sendMsg("条件不满足")
