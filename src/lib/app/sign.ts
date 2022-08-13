@@ -58,4 +58,13 @@ function random(min: number, max: number) {
 function isFileExist(filePath: string) {
     return fs.existsSync(filePath)
 }
-export { sign, isFileExist, signinfo }
+//获取金币
+function getGold(id: number) {
+    let gold: Number | string = 0
+    if (isFileExist(`${path.resolve()}/src/data/signdata.json`)) {
+        let data = JSON.parse(fs.readFileSync(`${path.resolve()}/src/data/signdata.json`, "utf-8").toString()) as unknown as Array<signinfo>
+        gold = data.find(item => item.id == id)?.Gold ?? "请先使用#签到指令"
+    }
+    return gold
+}
+export { sign, isFileExist, signinfo, getGold }

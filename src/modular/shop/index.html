@@ -102,21 +102,24 @@
         <div class="head">
             <img src="{{Avatar}}" width="100">
             <div>
-                <span>枫酱超市</span><br>
+                <span>{{title}}</span><br>
                 <span>金币数量：{{gold}}</span>
             </div>
             
         </div>
         <div class="shop">
+            {{if(props.length===0)}}
+                <span style="width:100% ;height: 100%;text-align:center;line-height: 100%;font: 4em sans-serif;">暂无商品</span>
+            {{/if}}
             {{each props }}
+            
             <div class="item">
                 <img src="../../../src/modular/shop/icon/{{$value.id}}.png" width="100">
                 <span class="br"></span>
                 <div>
                     <span>{{$value.name}}({{$value.id}})</span>
                     <span>{{$value.price}}金币</span>
-
-                    <span style="display:block ; width: 70px; height: 20px;background: black;border-radius:10px;margin-top: 3px;text-align: center; line-height: 20px;">购买</span>
+                    <span style="display:block ; width: 70px; height: 20px;background: black;border-radius:10px;margin-top: 3px;text-align: center; line-height: 20px;">{{$value.num?"数量:"+$value.num:"购买"}}</span>
                 </div>
             </div>
             {{/each}}

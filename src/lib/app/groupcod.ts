@@ -25,7 +25,7 @@ async function groupCod(event: MemberIncreaseEvent, bot: Client,) {
         }
         event.group.sendMsg({
             type: "image",
-            file: `base64://${await HtmlImg('groupCod', await addGroupFriendsInfo(event, groupFriends.get(event.group_id)?.find(item => item.id === event.user_id)?.cod as string ?? "获取失败"))} `
+            file: `base64://${await HtmlImg('groupCod', await addGroupFriendsInfo(event, groupFriends.get(event.group_id)?.find(item => item.id === event.user_id)?.cod as string ?? "获取失败"), event.user_id)} `
         })
         //
         schedule.scheduleJob(new Date(new Date().getTime() + (groupc.get(event.group_id)?.IsgroupCodTime as number)), async () => {

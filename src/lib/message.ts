@@ -2,7 +2,7 @@ import { AtElem, Client, GroupMessageEvent, ImageElem, MessageElem, PrivateMessa
 import { admins, groupc, signc } from "../config/config";
 import { groupFriends } from "./app/groupcod";
 import { githelpData } from "./app/help/help";
-import { goods } from "./app/shop";
+import { goods, userinfo } from "./app/shop";
 import { sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
 
@@ -17,17 +17,22 @@ async function group(event: GroupMessageEvent, Bot: Client) {
 async function friendText(event: PrivateMessageEvent, Bot: Client) {
     let msg = event.message.find(msg => msg.type === 'text') as TextElem
     if (new RegExp("#?帮助$", "m").test(msg?.text ?? "")) {
-        Bot.logger.info("收到指令：" + msg)
+        Bot.logger.info("收到指令：" + msg.text)
         event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("help", await githelpData(Bot))}` })
     } else if (new RegExp("#?签到$", "m").test(msg?.text ?? "")) {
-        Bot.logger.info("收到指令：" + msg)
+        Bot.logger.info("收到指令：" + msg.text)
         if (signc.Issign) {
-            event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("sign", await sign(event.friend.user_id, event.nickname))}` })
+            event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("sign", await sign(event.friend.user_id, event.nickname), event.sender.user_id)}` })
         }
     } else if (new RegExp("#?枫酱超市$", "m").test(msg?.text ?? "")) {
-        Bot.logger.info("收到指令：" + msg)
+        Bot.logger.info("收到指令：" + msg.text)
         if (signc.Issign) {
             event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.friend.uid, Bot))}` })
+        }
+    } else if (new RegExp("#?个人仓库$", "m").test(msg?.text ?? "")) {
+        Bot.logger.info("收到指令：" + msg.text)
+        if (signc.Issign) {
+            event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.friend.uid), event.friend.uid), event.friend.uid}` })
         }
     }
 }
@@ -39,7 +44,7 @@ async function groupText(event: GroupMessageEvent, Bot: Client) {
     } else if (new RegExp("#?签到$", "m").test(msg?.text ?? "")) {
         Bot.logger.info("收到指令：签到")
         if (signc.Issign) {
-            event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("sign", await sign(event.member.uid, event.nickname))}` })
+            event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("sign", await sign(event.member.uid, event.nickname), event.sender.user_id)}` })
         }
     } else if (new RegExp("#?验证(.*)", "m").test(msg?.text ?? "")) {
         //取右边的内容
@@ -61,9 +66,14 @@ async function groupText(event: GroupMessageEvent, Bot: Client) {
         }
 
     } else if (new RegExp("#?枫酱超市$", "m").test(msg?.text ?? "")) {
-        Bot.logger.info("收到指令：" + msg)
+        Bot.logger.info("收到指令：" + msg.text)
         if (signc.Issign) {
             event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.sender.user_id, Bot))}` })
+        }
+    } else if (new RegExp("#?个人仓库$", "m").test(msg?.text ?? "")) {
+        Bot.logger.info("收到指令：" + msg.text)
+        if (signc.Issign) {
+            event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
         }
     }
 

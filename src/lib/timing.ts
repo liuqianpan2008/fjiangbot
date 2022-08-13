@@ -1,3 +1,4 @@
+import events from 'inquirer/lib/utils/events';
 import schedule from 'node-schedule';
 import { Client } from 'oicq';
 import { groupc } from '../config/config';
@@ -16,7 +17,7 @@ async function timing(bot: Client) {
                         Avatar: `https://p.qlogo.cn/gh/${group.group_id}/${group.group_id}/${100}`,
                         title: "夜已深，请注意休息",
                         content: "已开启宵禁模式"
-                    })}`
+                    }, group.group_id)}`
                 });
                 await bot.pickGroup(group.group_id).muteAll(true)
                 bot.logger.info(`${group.group_id}宵禁已开闭，下次宵禁将在${Time.nextInvocation().toLocaleString()}开启`);
@@ -28,7 +29,7 @@ async function timing(bot: Client) {
                         Avatar: `https://p.qlogo.cn/gh/${group.group_id}/${group.group_id}/${100}`,
                         title: "天亮了，开始摸鱼了",
                         content: "已关闭宵禁模式"
-                    })}`
+                    }, group.group_id)}`
                 });
                 await bot.pickGroup(group.group_id).muteAll(false)
                 bot.logger.info(`${group.group_id}宵禁关闭，下次宵禁将在${endTime.nextInvocation().toLocaleString()}关闭`);
