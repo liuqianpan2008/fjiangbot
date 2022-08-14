@@ -143,8 +143,38 @@ async function groupAt(event: GroupMessageEvent, Bot: Client) {
     }
 }
 // 私聊道具食用
-function userpropsf(event: PrivateMessageEvent, Bot: Client) {
+async function userpropsf(event: PrivateMessageEvent, Bot: Client) {
     let msgT = event.message.find(msg => msg.type === 'text') as TextElem
+    if (new RegExp("#?使用道具(.*)", "m").test(msgT?.text ?? "")) {
+        //取右边的内容
+        let prop = Number(msgT.text.split("道具")[1])
+        if (!prop) {
+            event.friend.sendMsg("道具编号错误！")
+            return;
+        }
+        let used = userprops(event.sender.user_id, prop)
+        if (used != -1) {
+            await event.friend.sendMsg(`已经使用道具${(used as propT)?.name ?? ""}`)
+            await event.friend.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
+            if ((used as propT).type === "cdk") {
+                let cdkid = ((used as propT).effect as number)
+                let cdk = await uedcdk(cdkid)
+                if (cdk === -1) {
+                    addprops(event.sender.user_id, prop);
+                    event.friend.sendMsg("该CDK已经被使用")
+                } else {
+                    //是否是好友
+                    if (!Bot.getFriendList().get(event.sender.user_id)) {
+                        addprops(event.sender.user_id, prop);
+                        event.friend.sendMsg("不是好友无法使用！")
+                    }
+                    Bot.sendPrivateMsg(event.sender.user_id, `您的CDK是${cdk}`)
+                }
+            }
+        } else {
+            await event.friend.sendMsg("道具不存在或者无库存！")
+        }
+    }
 }
 // 群聊道具食用
 async function userpropsg(event: GroupMessageEvent, Bot: Client) {
