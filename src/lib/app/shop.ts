@@ -1,5 +1,5 @@
 import path from "path"
-import { props } from "../../config/config"
+import { cdksT, cdkT, props } from "../../config/config"
 import { getGold, isFileExist, reduceGold, signinfo, } from "./sign"
 import fs from 'fs'
 import { Client } from "oicq"
@@ -79,7 +79,24 @@ function buyshop(userid: number, goodsid: number) {
     }
     return msg
 }
-
+function addprops(user_id: number, goods_id: number) {
+    let data = JSON.parse(fs.readFileSync(`${path.resolve()}/src/data/userdata.json`, "utf-8").toString()) as unknown as Array<userinfo>
+    let userinfoi = data.findIndex(item => item.id === user_id)
+    if (userinfoi === -1) {
+        return -1
+    } else {
+        let propsi = data[userinfoi].props.findIndex(item => item.id === goods_id)
+        if (propsi === -1) {
+            return -1
+        } else {
+            data[userinfoi].props[propsi].num = (data[userinfoi].props[propsi].num as number) + 1
+            fs.writeFileSync(`${path.resolve()}/src/data/userdata.json`, JSON.stringify(data))
+            return {
+                ...props.find(item => item.id === goods_id)
+            }
+        }
+    }
+}
 function userprops(user_id: number, goods_id: number) {
     let data = JSON.parse(fs.readFileSync(`${path.resolve()}/src/data/userdata.json`, "utf-8").toString()) as unknown as Array<userinfo>
     let userinfoi = data.findIndex(item => item.id === user_id)
@@ -102,5 +119,18 @@ function userprops(user_id: number, goods_id: number) {
         }
     }
 }
+async function uedcdk(id: number) {
+    let data = JSON.parse(fs.readFileSync(`${path.resolve()}/src/config/cdk.json`, "utf-8").toString()) as unknown as Array<cdksT>
+    let cdks = data.find(item => item.id === id) as cdksT
+    let cdksi = data.findIndex(item => item.id === id)
+    let cdki = cdks?.cdk?.findIndex(item => item.cod === '未使用')
+    if (cdki === -1) {
+        return -1
+    }
+    data[cdksi].cdk[cdki].cod = '已使用'
+    fs.writeFileSync(`${path.resolve()}/src/config/cdk.json`, JSON.stringify(data, null, 1))
+    return data[cdksi].cdk[cdki].cdk
 
-export { goods, userinfo, buyshop, userprops }
+}
+
+export { goods, userinfo, buyshop, userprops, uedcdk, addprops }

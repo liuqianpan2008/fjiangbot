@@ -1,8 +1,8 @@
 import { AtElem, Client, Group, GroupMessageEvent, ImageElem, MessageElem, PrivateMessageEvent, Sendable, TextElem } from "oicq";
-import { admins, groupc, groupT, propT, signc } from "../config/config";
+import { admins, cdkT, groupc, groupT, propT, signc } from "../config/config";
 import { groupFriends } from "./app/groupcod";
 import { githelpData } from "./app/help/help";
-import { buyshop, goods, userinfo, userprops } from "./app/shop";
+import { addprops, buyshop, goods, uedcdk, userinfo, userprops } from "./app/shop";
 import { sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
 
@@ -165,13 +165,30 @@ async function userpropsg(event: GroupMessageEvent, Bot: Client) {
         if (used != -1) {
             await event.group.sendMsg(`已经使用道具${(used as propT)?.name ?? ""}`)
             await event.group.sendMsg({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
-            if ((used as propT).type = "jy") {
+            if ((used as propT).type === "jy") {
                 let msgAt = event.message.find(msg => msg.type === 'at') as AtElem
                 event.group.pickMember(msgAt.qq as number).mute(Number((used as propT).effect) ?? 180)
+            }
+            if ((used as propT).type === "cdk") {
+                let cdkid = ((used as propT).effect as number)
+                let cdk = await uedcdk(cdkid)
+                if (cdk === -1) {
+                    addprops(event.sender.user_id, prop);
+                    event.group.sendMsg("该CDK已经被使用")
+
+                } else {
+                    //是否是好友
+                    if (!Bot.getFriendList().get(event.sender.user_id)) {
+                        addprops(event.sender.user_id, prop);
+                        event.group.sendMsg("不是好友无法使用！")
+                    }
+                    Bot.sendPrivateMsg(event.sender.user_id, `您的CDK是${cdk}`)
+                }
             }
         } else {
             await event.group.sendMsg("道具不存在或者无库存！")
         }
     }
 }
+
 export { friend, group };
