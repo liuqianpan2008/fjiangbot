@@ -1,5 +1,5 @@
 import path from "path"
-import { cdksT, cdkT, props } from "../../config/config"
+import { props } from "../../config/config"
 import { getGold, isFileExist, reduceGold, signinfo, } from "./sign"
 import fs from 'fs'
 import { Client } from "oicq"
@@ -26,10 +26,10 @@ function userinfo(id: number) {
         let data = JSON.parse(fs.readFileSync(`${path.resolve()}/src/data/userdata.json`, "utf-8").toString()) as unknown as Array<userinfo>
         if (data.find(item => item.id === id)) {
             data.find(item => item.id === id)?.props.forEach(item => {
-                let data = props.find(item1 => item1.id === item.id)
+                let data = props.find(item1 => item1?.id === item?.id)
                 propdate.push({
                     ...data,
-                    num: item.num
+                    num: item?.num ?? 0
                 })
             })
         }
@@ -103,34 +103,25 @@ function userprops(user_id: number, goods_id: number) {
     if (userinfoi === -1) {
         return -1
     } else {
-        let propsi = data[userinfoi].props.findIndex(item => item.id === goods_id)
-        if (propsi === -1 && (data[userinfoi].props.find(item => item.id === goods_id)?.num ?? -1) > 0) {
+        let propsi = data[userinfoi].props.findIndex(item => item?.id === goods_id)
+        if (propsi === -1 && (data[userinfoi].props.find(item => item?.id === goods_id)?.num ?? -1) > 0) {
             return -1
         } else {
             if ((data[userinfoi].props[propsi]?.num ?? -1) > 0) {
                 data[userinfoi].props[propsi].num = (data[userinfoi].props[propsi].num as number) - 1
+                // if (data[userinfoi].props[propsi].num === 0) {
+                //     delete data[userinfoi].props[propsi]
+                // }
             } else {
                 return -1
             }
             fs.writeFileSync(`${path.resolve()}/src/data/userdata.json`, JSON.stringify(data))
             return {
-                ...props.find(item => item.id === goods_id)
+                ...props.find(item => item?.id === goods_id)
             }
         }
     }
 }
-async function uedcdk(id: number) {
-    let data = JSON.parse(fs.readFileSync(`${path.resolve()}/src/config/cdk.json`, "utf-8").toString()) as unknown as Array<cdksT>
-    let cdks = data.find(item => item.id === id) as cdksT
-    let cdksi = data.findIndex(item => item.id === id)
-    let cdki = cdks?.cdk?.findIndex(item => item.cod === '未使用')
-    if (cdki === -1) {
-        return -1
-    }
-    data[cdksi].cdk[cdki].cod = '已使用'
-    fs.writeFileSync(`${path.resolve()}/src/config/cdk.json`, JSON.stringify(data, null, 1))
-    return data[cdksi].cdk[cdki].cdk
 
-}
 
-export { goods, userinfo, buyshop, userprops, uedcdk, addprops }
+export { goods, userinfo, buyshop, userprops, addprops }

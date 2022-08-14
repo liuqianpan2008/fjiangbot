@@ -1,5 +1,6 @@
 import { Platform } from "oicq";
 import { LogLevel } from "oicq/lib/client";
+import { type } from "os";
 
 type QQcT = {
     qq: number,
@@ -25,7 +26,7 @@ type signT = {
 }
 type propT = {
     id: number,
-    type: "jy" | "bq" | "cdk",
+    type: "jy" | "cj" | "cdk",
     name: string,
     price: number,
     effect: any
@@ -87,5 +88,20 @@ let props: Array<propT> = [{
     type: "cdk",
     price: 1000,
     effect: 1
+}, {
+    id: 3,
+    name: "抽奖卡",
+    type: "cj",
+    price: 1000,
+    effect: [
+        {
+            type: "gold",
+            value: 100,
+            probability: 0
+        }, {
+            type: "props",
+            value: 200,
+            probability: 0//概率为0则100%抽到，概率为1则抽到1/2,概率为3则抽到1/3...只接受整数
+        }]
 }]
 export { QQc, groupc, signc, admins, props, propT, groupT, cdkT, cdksT };

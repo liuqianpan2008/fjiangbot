@@ -2,7 +2,8 @@ import { AtElem, Client, Group, GroupMessageEvent, ImageElem, MessageElem, Priva
 import { admins, cdkT, groupc, groupT, propT, signc } from "../config/config";
 import { groupFriends } from "./app/groupcod";
 import { githelpData } from "./app/help/help";
-import { addprops, buyshop, goods, uedcdk, userinfo, userprops } from "./app/shop";
+import { lottery, lotteryT, uedcdk } from "./app/props";
+import { addprops, buyshop, goods, userinfo, userprops } from "./app/shop";
 import { sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
 
@@ -214,6 +215,10 @@ async function userpropsg(event: GroupMessageEvent, Bot: Client) {
                     }
                     Bot.sendPrivateMsg(event.sender.user_id, `您的CDK是${cdk}`)
                 }
+            }
+            if ((used as propT).type === "cj") {
+                let lotterys = await lottery((used as propT).effect as Array<lotteryT>, event.sender.user_id)
+                event.group.sendMsg(lotterys)
             }
         } else {
             await event.group.sendMsg("道具不存在或者无库存！")

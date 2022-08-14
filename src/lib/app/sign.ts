@@ -79,4 +79,16 @@ function reduceGold(id: number, gold: number) {
         return true
     }
 }
-export { sign, isFileExist, signinfo, getGold, reduceGold }
+//增加金币
+function addGold(id: number, gold: number) {
+    if (getGold(id) === "请先使用#签到指令") {
+        return false
+    } else {
+        let data = JSON.parse(fs.readFileSync(`${path.resolve()}/src/data/signdata.json`, "utf-8").toString()) as unknown as Array<signinfo>
+        let signinfoi = data.findIndex(item => item.id === id)
+        data[signinfoi].Gold = (data[signinfoi].Gold as number) + gold
+        fs.writeFileSync(`${path.resolve()}/src/data/signdata.json`, JSON.stringify(data))
+        return true
+    }
+}
+export { sign, isFileExist, signinfo, getGold, reduceGold, addGold }
