@@ -1,6 +1,5 @@
 import { Platform } from "oicq";
 import { LogLevel } from "oicq/lib/client";
-import { type } from "os";
 
 type QQcT = {
     qq: number,
@@ -30,6 +29,14 @@ type propT = {
     name: string,
     price: number,
     effect: any
+}
+type cdksT = {
+    id: number,
+    cdk: Array<cdkT>
+}
+type cdkT = {
+    cod: "未使用" | "已使用",
+    cdk: string,
 }
 let QQc: QQcT = {
     qq: 161009029,
@@ -75,16 +82,9 @@ let props: Array<propT> = [{
     effect: 60//禁言时常
 }, {
     id: 2,
-    name: "补签卡",
-    type: "bq",
-    price: 100,
-    effect: ""//
-}, {
-    id: 3,
     name: "绿钻cdk",
     type: "cdk",
     price: 1000,
-    effect: ["123456", "123456"]
-
+    effect: 1
 }]
-export { QQc, groupc, signc, admins, props, propT, groupT };
+export { QQc, groupc, signc, admins, props, propT, groupT, cdkT, cdksT };
