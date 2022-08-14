@@ -54,7 +54,7 @@ let groupc: Map<number, groupT> = new Map([
         curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间 需要Cron表达式
         curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间 需要Cron表达式
         Isadmin: true,//是否管理员使用群管功能
-        props: []//允许使用的道具
+        props: []//禁止使用的道具
     }],
     // 单独配置
     [877894787, {
@@ -65,7 +65,7 @@ let groupc: Map<number, groupT> = new Map([
         curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间
         curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间
         Isadmin: true,
-        props: []//允许使用道具
+        props: []//禁止使用道具
     }],
 ]);
 let signc: signT = {
@@ -75,6 +75,7 @@ let signc: signT = {
 }
 let admins: Array<number> = [2180323481];//管理员QQ号
 let props: Array<propT> = [{
+    //道具图片在modular/shop/icon文件夹下命名规则：id.png
     id: 1,
     name: "禁言卡",
     type: "jy",
