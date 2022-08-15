@@ -1,4 +1,4 @@
-import { AtElem, Client, Group, GroupMessageEvent, ImageElem, MessageElem, PrivateMessageEvent, Sendable, TextElem } from "oicq";
+import { AtElem, Client, Group, GroupMessageEvent, MessageElem, PrivateMessageEvent, Quotable, Sendable, TextElem } from "oicq";
 import { admins, cdkT, groupc, groupT, propT, signc } from "../config/config";
 import { groupFriends } from "./app/groupcod";
 import { githelpData } from "./app/help/help";
@@ -172,6 +172,10 @@ async function userpropsf(event: PrivateMessageEvent, Bot: Client) {
                     Bot.sendPrivateMsg(event.sender.user_id, `您的CDK是${cdk}`)
                 }
             }
+            if ((used as propT).type === "cj") {
+                let lotterys = await lottery((used as propT).effect as Array<lotteryT>, event.sender.user_id)
+                event.friend.sendMsg(lotterys)
+            }
         } else {
             await event.friend.sendMsg("道具不存在或者无库存！")
         }
@@ -206,9 +210,7 @@ async function userpropsg(event: GroupMessageEvent, Bot: Client) {
                 if (cdk === -1) {
                     addprops(event.sender.user_id, prop);
                     event.group.sendMsg("该CDK已经被使用")
-
                 } else {
-                    //是否是好友
                     if (!Bot.getFriendList().get(event.sender.user_id)) {
                         addprops(event.sender.user_id, prop);
                         event.group.sendMsg("不是好友无法使用！")
@@ -225,5 +227,6 @@ async function userpropsg(event: GroupMessageEvent, Bot: Client) {
         }
     }
 }
+// 添加词条
 
 export { friend, group };

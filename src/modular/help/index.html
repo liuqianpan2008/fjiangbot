@@ -4,8 +4,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="../../../src/modular/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <script src="https://unpkg.com/element-plus"></script>
     <style>
-        @font-face {
+      .box-card,#container{
+        max-width: 503px;
+        min-height: 300px;
+      }
+      @font-face {
             font-family: 'Roboto';
             src: url("../../../src/modular/SourceHanSansSC-Medium.otf") format('opentype');
         }
@@ -13,132 +20,50 @@
             margin: 0;
             padding: 0;
             font-family: 'Roboto';
-            color: aliceblue;
-        }
-        body{
-            background: #7b4397;
-            background: -webkit-linear-gradient(to right, #dc2430, #7b4397);
-            background: linear-gradient(to right, #dc2430, #7b4397); 
-        }
-        .head,.foot,.content,.brbox{
-            width: 98%;
-
-        }
-        .head,.foot,.item{
-            box-shadow: 0 0 10px rgb(0, 0, 0);
-            border-radius: 10px;
-        }
-        .head{
-            margin: 0 auto;
-            height: 100px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 10px;
-        }
-        .head div span{
-            font-size: 2rem;
-            font-weight: bold;
-
-            padding-left: 10px;
-        }
-        .head div span:nth-of-type(2){
-            padding-left: 30px;
-            
-        }
-        .head img{
-            margin-right: 5px;
-            border-radius: 50% 50%;
-        }
-        .content{
-            position: relative;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .item{
-            width: 32%;
-            height: 15%;
-            margin: 5px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            position: relative;
-
-        }
-        .item img{
-            padding:3px;
-            border-radius: 50%;
-        }
-        .item div span{
-            font-weight: bold;
-
-        }
-        .item div span:nth-of-type(2){
-            padding-left: 5px;
-
-        }
-        .foot{
-            margin: 0 auto;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-            position: absolute;
-            z-index: 1;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
-        .foot span{
-            padding-left: 10px;
-        }
-        .brbox{
-            position: absolute;
-            z-index: -1;
-            background: #7b4397;
-            background: -webkit-linear-gradient(to right, #dc2430, #7b4397);
-            background: linear-gradient(to right, #dc2430, #7b4397); 
-            filter: blur(5px);
-            border-radius: 10px;
-        }
-        #container{
-            width: 800px;
-            height: 1000px;
         }
     </style>
-</head>
-<body id="container">
-    <div class="head">
-        <div class="brbox" style="height: 100px;"></div>
-        <div>
-            <span>{{BotName}}使用说明</span><br>
-            <span>V1.0.0</span>
+  </head>
+<body>
+  <div id="container">
+    <el-card class="box-card" shadow="always" >
+      <template #header>
+        <div class="card-header">
+          <span style="font-size: 30px;">{{BotName}}</span>
+<!-- 头像 -->
+          <el-avatar 
+            src="{{Avatar}}"
+            style="float: right;"
+            :size="50"
+            text/>
         </div>
-        <img src="{{Avatar}}" width="100">
-    </div>
-    <br>
-    <div class="content" >
-        <div class="brbox" style="height: 100%; width: 100%;"></div>
-        {{each data }}
-         <div class="item">
-            <div class="brbox" style="height: 100%; width: 100%;"></div>
-            {{_res_path}}
-            <img src="{{$value.icon}}" width="60" style="max-width: 60px;">
-            <div>
-                <span>{{$value.name}}</span>
-                <br>
-                <span style="font-size: 1rem;">{{$value.describe}}</span>
-            </div>
-        </div>
-        {{/each}}
-    </div>
-    <br>
-    <div class='foot'>
-        <div class="brbox" style="height: 100%; width: 100%;"></div>
-        <span>by枫酱Bot-枫叶秋林-开源代码切勿商用</span>
-    </div>
+      </template>
+        <el-space wrap>
 
+          {{each data }}
+          <el-card style="width: 220px;">
+            <el-space wrap alignment="flex-start">
+              <div>
+                <img src="{{$value.icon}}" width="60" style="max-width: 60px;">
+              </div>
+              <div style="display:flex; flex-direction: column">
+                <span style="font-size: 20px;padding:5px 0 ;">{{$value.name}}</span>
+                <span style="font-size: 10px;">{{$value.describe}}</span>
+              </div>
+            </el-space>
+          </el-card>
+          {{/each}}
+
+        </el-space>
+    </el-card>
+  </div>
+
+  <script>
+    const { createApp } = Vue
+    createApp({
+      setup(){
+        return {}
+      }
+    }).use(ElementPlus).mount('#container')
+  </script>
 </body>
 </html>
