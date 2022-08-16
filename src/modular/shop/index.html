@@ -4,128 +4,86 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="../../../src/modular/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <script src="https://unpkg.com/element-plus"></script>
     <style>
+        #container,.box-card{
+            width: 550px;
+            min-height: 260px;
+        }
+        @font-face {
+            font-family: 'Roboto';
+            src: url("../../../src/modular/SourceHanSansSC-Medium.otf") format('opentype');
+        }
         *{
-            margin: 0;
-            padding: 0;
-            color: aliceblue;
-            text-shadow: 0 0 10px rgb(0, 0, 0);
+            font-family: 'Roboto';
         }
-        #container{
-            width: 450px;
-            min-height: 400px;
-            border: 1px solid red;
-            background:tomato;
-            position: relative;
-            box-shadow: 0 0 10px rgb(0, 0, 0);
-            border-radius: 10px;
-        }
-        .head{
-            width: 100%;
-            height: 105px;
+        .nameInfo {
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            border-radius: 10px;
-            
-        }
-        .head img{
-            margin:5px 3px;
-            border-radius: 50% 50%;
-        }
-        .head div span{
-            margin: 0 5px;
-        }
-        .head div span:nth-of-type(1){
-            font-size: 50px;
-        }
-        .shop{
-            width: 100%;
-            height: 295px;
-            display: flex;
-            justify-content: flex-start;
-            flex-wrap: wrap;
-        }
-        .item{
-            width: 30%;
-            height: 150px;
-            display: flex;
-            justify-content: center;
             flex-direction: column;
-            align-items: center;
-            border-radius: 10px;
-            margin: 5px;
-            box-shadow: 0 0 10px rgb(0, 0, 0);
-            position: relative;
-            z-index: 0;
+            align-content: flex-start;
+            padding-left: 15px;
         }
-        .br{
-            position: absolute;
-            width: 100%;
-            height: 150px;
-            z-index: -1;
-            filter: blur(5px);
-            box-shadow: 0 0 10px rgb(0, 0, 0);
-            background:rgb(248, 116, 93);
-            
-        }
-        .item img{
-            width: 70px;
-            height: 70px;
-            border-radius: 50% 50%;
-            padding-bottom: 8px;
-        }
-        .item div{
-              width: 100%;
-                height: 70px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-                border-radius: 10px;
-                flex-wrap: wrap
-        }
-        .item div span{
-            text-align: center;
-        }
-        .logo{
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            z-index: 2;
-            color: rgb(226, 214, 214);
-        }
+        .bottom {
+  margin-top: 13px;
+  line-height: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
     </style>
 </head>
 <body>
     <div id="container">
-        <div class="head">
-            <img src="{{Avatar}}" width="100">
-            <div>
-                <span>{{title}}</span><br>
-                <span>金币数量：{{gold}}</span>
-            </div>
-            
-        </div>
-        <div class="shop">
-            {{if(props.length===0)}}
-                <span style="width:100% ;height: 100%;text-align:center;line-height: 100%;font: 4em sans-serif;">暂无商品</span>
-            {{/if}}
-            {{each props }}
-            
-            <div class="item">
-                <img src="../../../src/modular/shop/icon/{{$value.id}}.png" width="100">
-                <span class="br"></span>
-                <div>
-                    <span>{{$value.name}}({{$value.id}})</span>
-                    <span>{{$value.price}}金币</span>
-                    <span style="display:block ; width: 70px; height: 20px;background: black;border-radius:10px;margin-top: 3px;text-align: center; line-height: 20px;">{{$value.num?"数量:"+$value.num===0?0:$value.num:"购买"}}</span>
-                </div>
-            </div>
-            {{/each}}
-            <span class="logo">By:枫酱Bot</span>
-        </div>
+        <el-card class="box-card">
+            <template #header>
+                <el-space wrap>
+                    <div>
+                        <el-avatar :size="100" src="{{Avatar}}" />
+                    </div>
+                    <div class="nameInfo">
+                        <span style="font-size: 30px;">
+                            {{title}}
+                        </span>
+                        <span style="font-size: 20px;">
+                            金币数量：{{gold}}
+                        </span>
+                    </div>
+                </el-space>
+
+            </template>
+            <el-row :gutter="20">
+                {{each props }}
+                <el-col :span="8">
+                    <el-card :body-style="{ padding: '0px' }">
+                        <img
+                          src="../../../src/modular/shop/icon/{{$value.id}}.png"
+                          width="155"
+                        />
+                        <div style="padding: 14px">
+                          <span>{{$value.name}}({{$value.id}})</span>
+                          <div>
+                            <el-space wrap>
+                                <span style="color: #c8c9cc;">{{$value.price}}</span>
+                                <el-button text class="button" type="success">{{$value.num?"数量:"+$value.num===0?0:$value.num:"购买"}}</el-button>
+                            </el-space>  
+                        </div>
+                          
+                        </div>
+                      </el-card>
+                </el-col>
+                {{/each}}
+            </el-row>
+          </el-card>
     </div>
-    
+    <script>
+        const { createApp } = Vue
+        createApp({
+          setup(){
+            return {}
+          }
+        }).use(ElementPlus).mount('#container')
+      </script>
 </body>
 </html>
