@@ -1,7 +1,7 @@
 import { createClient, GroupMessageEvent, MemberIncreaseEvent } from 'oicq';
 import { QQc } from './config/config';
 import { groupCod } from './lib/app/groupcod';
-import { friend, group } from './lib/message';
+import { group, message } from './lib/message';
 import timing from './lib/timing';
 const QQbot = createClient(QQc.qq, {
     log_level: QQc.log,
@@ -38,11 +38,12 @@ QQbot.on("system.online", async () => {
     await timing(QQbot);
     // 监听私聊事件
     QQbot.on('message.private.friend', async (event) => {
-        await friend(event, QQbot);
+        await message(event, QQbot)
     })
     // 监听群聊事件
     QQbot.on('message.group', async (event: GroupMessageEvent) => {
         await group(event, QQbot);
+        await message(event, QQbot)
     })
     // 监听进群事件
     QQbot.on('notice.group.increase', async (event: MemberIncreaseEvent) => {
