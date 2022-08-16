@@ -1,9 +1,10 @@
-import { AtElem, Client, Group, GroupMessageEvent, MessageElem, PrivateMessageEvent, Quotable, Sendable, TextElem } from "oicq";
-import { admins, cdkT, groupc, groupT, propT, signc } from "../config/config";
+import { AtElem, Client, GroupMessageEvent, PrivateMessageEvent, TextElem } from "oicq";
+import { admins, groupc, signc } from "../config/config";
 import { groupFriends } from "./app/groupcod";
 import { githelpData } from "./app/help/help";
-import { lottery, lotteryT, uedcdk, userprop } from "./app/props";
-import { addprops, buyshop, goods, userinfo, userprops } from "./app/shop";
+import { rules, runplugin } from "./app/plugin";
+import { userprop } from "./app/props";
+import { buyshop, goods, userinfo } from "./app/shop";
 import { sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
 async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Client) {
@@ -11,37 +12,32 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
     msg.forEach(async (item) => {
         switch (item.type) {
             case "text": (async () => {
-                await rules("#?帮助$", item, async () => {
+                rules("#?帮助$", item, async () => {
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("help", await githelpData(Bot))}` })
                 })
-                await rules("#?签到$", item, async () => {
+                rules("#?签到$", item, async () => {
                     if (signc.Issign) {
                         event.reply({ type: 'image', file: `base64://${await HtmlImg("sign", await sign(event.sender.user_id, event.nickname), event.sender.user_id)}` })
                     }
                 })
-                await rules("#?枫酱超市$", item, async () => {
+                rules("#?枫酱超市$", item, async () => {
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.sender.user_id, Bot))}` })
                 })
-                await rules("#?个人仓库$", item, async () => {
+                rules("#?个人仓库$", item, async () => {
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
                 })
-                await rules("#?购买道具(.*)$", item, async () => {
+                rules("#?购买道具(.*)$", item, async () => {
                     let goodsid = item.text.split("具")[1]
                     await event.reply(buyshop(event.sender.user_id, Number(goodsid)))
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
                 })
-                userprop(event, Bot)
+                userprop(event, Bot);
+                runplugin(event, item);
             })()
         }
     })
 }
-async function rules(rules: string, msg: TextElem, run: Function) {
-    if (new RegExp(rules).test(msg.text)) {
-        run()
-    } else {
-        return false
-    }
-}
+
 async function group(event: GroupMessageEvent, Bot: Client) {
     groupValidation(event, Bot)
     groupAt(event, Bot)
