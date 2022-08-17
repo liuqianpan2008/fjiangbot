@@ -31,11 +31,17 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                     await event.reply(buyshop(event.sender.user_id, Number(goodsid)))
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
                 })
-                userprop(event, Bot);
+                rules("#?点歌(.*)", item, async () => {
+                    let song = item.text.split("歌")[1]
+                    if (event.message_type === 'group') {
+                        event.group.shareMusic("163", song)
+                    }
+                })
                 runplugin(event, item);
             })()
         }
     })
+    userprop(event, Bot);
 }
 
 async function group(event: GroupMessageEvent, Bot: Client) {

@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { Client, GroupMessageEvent, PrivateMessageEvent, TextElem } from 'oicq'
+import { AtElem, Client, GroupMessageEvent, PrivateMessageEvent, TextElem } from 'oicq'
 import path from 'path'
 import { cdksT, propT } from '../../config/config'
 import { HtmlImg } from '../puppeteer'
@@ -59,9 +59,17 @@ async function userprop(event: PrivateMessageEvent | GroupMessageEvent, Bot: Cli
             return;
         }
         let used = userprops(event.sender.user_id, prop)
-        if (used != -1) {
+        if (used !== -1) {
             await event.reply(`已经使用道具${(used as propT)?.name ?? ""}`)
             await event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
+            //
+            if ((used as propT).type === "jy") {
+                let time = Number((used as propT).effect)
+                let qq = Number((event.message.find(msg => msg.type === 'at') as AtElem).qq)
+                if (event.message_type == 'group' && qq != 0) {
+                    await (event as GroupMessageEvent).group.pickMember(qq).mute(time)
+                }
+            }
             if ((used as propT).type === "cdk") {
                 ckd(prop, used)
             }
@@ -94,8 +102,7 @@ async function userprop(event: PrivateMessageEvent | GroupMessageEvent, Bot: Cli
     }
 }
 
-// 抽取一个随机数
 function random(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
-export { uedcdk, lottery, lotteryT, userprop }
+export { userprop }

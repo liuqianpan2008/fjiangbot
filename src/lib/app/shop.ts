@@ -109,9 +109,6 @@ function userprops(user_id: number, goods_id: number) {
         } else {
             if ((data[userinfoi].props[propsi]?.num ?? -1) > 0) {
                 data[userinfoi].props[propsi].num = (data[userinfoi].props[propsi].num as number) - 1
-                // if (data[userinfoi].props[propsi].num === 0) {
-                //     delete data[userinfoi].props[propsi]
-                // }
             } else {
                 return -1
             }
