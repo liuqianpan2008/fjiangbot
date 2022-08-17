@@ -1,3 +1,4 @@
+import axios from "axios";
 import { AtElem, Client, GroupMessageEvent, PrivateMessageEvent, TextElem } from "oicq";
 import { admins, groupc, signc } from "../config/config";
 import { groupFriends } from "./app/groupcod";
@@ -27,14 +28,17 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
                 })
                 rules("#?购买道具(.*)$", item, async () => {
-                    let goodsid = item.text.split("具")[1]
+                    let goodsid = item.text.split("具")[1].trim()
                     await event.reply(buyshop(event.sender.user_id, Number(goodsid)))
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
                 })
                 rules("#?点歌(.*)", item, async () => {
                     let song = item.text.split("歌")[1]
+                    console.log(song);
+                    let date = await (await axios.get(`https://cloud-music-api-f494k233x-mgod-monkey.vercel.app/search?keywords=${encodeURI(song)}`)).data
                     if (event.message_type === 'group') {
-                        event.group.shareMusic("163", song)
+                        event.reply("点歌成功!歌曲名称：" + date.result.songs[0].name)
+                        event.group.shareMusic("163", date.result.songs[0].id)
                     }
                 })
                 runplugin(event, item);
