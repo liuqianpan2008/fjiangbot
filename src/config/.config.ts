@@ -105,9 +105,9 @@ let props: Array<propT> = [{
         }]
 }, {
     id: 4,
-    name: "插件道具",
+    name: "自定义插件道具",
     type: "plugin",
     price: 1000,
-    effect: 1//需要与自己编写的插件id相互对应
+    effect: 1
 }]
 export { QQc, groupc, signc, admins, props, propT, groupT, cdkT, cdksT };
