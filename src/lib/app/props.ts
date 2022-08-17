@@ -3,6 +3,7 @@ import { Client, GroupMessageEvent, PrivateMessageEvent, TextElem } from 'oicq'
 import path from 'path'
 import { cdksT, propT } from '../../config/config'
 import { HtmlImg } from '../puppeteer'
+import { pluginprop } from './plugin'
 import { addprops, userinfo, userprops } from './shop'
 import { addGold } from './sign'
 async function uedcdk(id: number) {
@@ -62,29 +63,37 @@ async function userprop(event: PrivateMessageEvent | GroupMessageEvent, Bot: Cli
             await event.reply(`已经使用道具${(used as propT)?.name ?? ""}`)
             await event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
             if ((used as propT).type === "cdk") {
-                let cdkid = ((used as propT).effect as number)
-                let cdk = await uedcdk(cdkid)
-                if (cdk === -1) {
-                    addprops(event.sender.user_id, prop);
-                    event.reply("该CDK已经被使用")
-                } else {
-                    //是否是好友
-                    if (!Bot.getFriendList().get(event.sender.user_id)) {
-                        addprops(event.sender.user_id, prop);
-                        event.reply("不是好友无法使用！")
-                    }
-                    Bot.sendPrivateMsg(event.sender.user_id, `您的CDK是${cdk}`)
-                }
+                ckd(prop, used)
             }
             if ((used as propT).type === "cj") {
                 let lotterys = await lottery((used as propT).effect as Array<lotteryT>, event.sender.user_id)
                 event.reply(lotterys)
             }
+            if ((used as propT).type === "plugin") {
+                pluginprop(Number((used as propT)?.effect) ?? 0, event)
+            }
         } else {
             await event.reply("道具不存在或者无库存！")
         }
     }
+
+    async function ckd(prop: number, used: any) {
+        let cdkid = ((used as propT).effect as number)
+        let cdk = await uedcdk(cdkid)
+        if (cdk === -1) {
+            addprops(event.sender.user_id, prop);
+            event.reply("该CDK已经被使用")
+        } else {
+            //是否是好友
+            if (!Bot.getFriendList().get(event.sender.user_id)) {
+                addprops(event.sender.user_id, prop);
+                event.reply("不是好友无法使用！")
+            }
+            Bot.sendPrivateMsg(event.sender.user_id, `您的CDK是${cdk}`)
+        }
+    }
 }
+
 // 抽取一个随机数
 function random(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min)

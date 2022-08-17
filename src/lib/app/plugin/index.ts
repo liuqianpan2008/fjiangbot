@@ -1,5 +1,6 @@
 import { GroupMessageEvent, PrivateMessageEvent, Sendable, TextElem } from "oicq"
 import egPlugin from "./eg"
+import egprop from "./egprop"
 
 async function runplugin(event: PrivateMessageEvent | GroupMessageEvent, smg: TextElem) {
     //写好插件要在这里进行指令注册
@@ -14,6 +15,13 @@ async function runplugin(event: PrivateMessageEvent | GroupMessageEvent, smg: Te
         })
     }
 }
+// 自定义道具执行逻辑
+async function pluginprop(id: number, event: PrivateMessageEvent | GroupMessageEvent) {
+    //effect自定义的值执行相应逻辑
+    switch (id) {
+        case 1: egprop(event)
+    }
+}
 
 async function rules(rules: string, msg: TextElem, run: Function) {
     if (new RegExp(rules).test(msg.text)) {
@@ -23,4 +31,4 @@ async function rules(rules: string, msg: TextElem, run: Function) {
         return false
     }
 }
-export { rules, runplugin }
+export { rules, runplugin, pluginprop }

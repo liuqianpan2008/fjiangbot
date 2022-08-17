@@ -26,7 +26,7 @@ type signT = {
 }
 type propT = {
     id: number,
-    type: "jy" | "cj" | "cdk",
+    type: "jy" | "cj" | "cdk" | "plugin",
     name: string,
     price: number,
     effect: any
@@ -80,7 +80,7 @@ let props: Array<propT> = [{
     id: 1,
     name: "禁言卡",
     type: "jy",
-    price: 100,//道具售价
+    price: 100,
     effect: 60//禁言时常
 }, {
     id: 2,
@@ -95,13 +95,19 @@ let props: Array<propT> = [{
     price: 1000,
     effect: [
         {
-            type: "gold",//类型只能写gold（金币）或者props（道具）
-            value: 100,//金币就是数量道具就是道具id
-            probability: 0//概率为0则100%抽到，概率为1则抽到1/2,概率为3则抽到1/3...只接受整数
+            type: "gold",
+            value: 100,
+            probability: 0
         }, {
             type: "props",
-            value: 200,
+            value: 1,
             probability: 0
         }]
+}, {
+    id: 4,
+    name: "插件道具",
+    type: "plugin",
+    price: 1000,
+    effect: 1//需要与自己编写的插件id相互对应
 }]
 export { QQc, groupc, signc, admins, props, propT, groupT, cdkT, cdksT };
