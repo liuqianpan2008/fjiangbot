@@ -54,7 +54,7 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                         event.reply({ type: 'image', file: `base64://${await HtmlImg("grupinfo", await groupinfo(event.member), event.sender.user_id)}` })
                     }
                 })
-                rules("#?(=)(.*)", item, async () => {
+                rules("#?=\d+(\+|-|\*|\/)\d+", item, async () => {
                     let calculate = item.text.split("=")[1]
                     try {
                         let result = String(await eval(calculate))
