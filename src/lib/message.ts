@@ -3,6 +3,7 @@ import { AtElem, Client, GroupMessageEvent, PrivateMessageEvent, TextElem } from
 import { admins, groupc, signc } from "../config/config";
 import banwords from "./app/banworld";
 import { groupFriends } from "./app/groupcod";
+import groupinfo from "./app/groupinfo";
 import { githelpData } from "./app/help/help";
 import { rules, runplugin } from "./app/plugin";
 import { userprop } from "./app/props";
@@ -46,6 +47,11 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                     let date = await (await axios.get(`http://api.guaqb.cn/v1/onesaid/`)).data
                     if (event.message_type === 'group') {
                         event.reply(date)
+                    }
+                })
+                rules("#?个人信息", item, async () => {
+                    if (event.message_type === 'group') {
+                        event.reply({ type: 'image', file: `base64://${await HtmlImg("grupinfo", await groupinfo(event.member))}` })
                     }
                 })
                 runplugin(event, item);

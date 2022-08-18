@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../../src/modular/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <script src="https://unpkg.com/element-plus"></script>
+    <style>
+        #container{
+            max-width: 503px;
+            min-height: 300px;
+           
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <el-card id="container">
+            <template #header>
+                <el-space wrap>
+                    <div>
+                        <el-avatar src="{{Avatar}}" :size="100"/>
+                    </div>
+                    <div>
+                        <span style="font-size:40px ;">{{name}}</span><br>
+                        <spam style="font-size:10px ;">{{LinKing}}</spam>
+                    </div>
+                </el-space>
+            </template>
+            <el-row :gutter="10">
+                <el-col :span="8">
+                    <el-card>
+                        是否禁言：{{isnume}}
+                    </el-card>
+                </el-col>
+                <el-col :span="8">
+                    <el-card>
+                        加入时间：{{joinTime}}
+                    </el-card>
+                </el-col>
+                <el-col :span="8">
+                    <el-card>
+                        发言时间：{{lastTime}}
+                    </el-card>
+                </el-col>
+              </el-row>
+          </el-card>
+    </div>
+    <script>
+        const { createApp } = Vue
+        createApp({
+          setup(){
+            return {}
+          }
+        }).use(ElementPlus).mount('#container')
+      </script>
+</body>
+</html>
