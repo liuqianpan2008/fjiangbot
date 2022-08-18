@@ -51,7 +51,7 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                 })
                 rules("#?个人信息", item, async () => {
                     if (event.message_type === 'group') {
-                        event.reply({ type: 'image', file: `base64://${await HtmlImg("grupinfo", await groupinfo(event.member))}` })
+                        event.reply({ type: 'image', file: `base64://${await HtmlImg("grupinfo", await groupinfo(event.member), event.sender.user_id)}` })
                     }
                 })
                 runplugin(event, item);

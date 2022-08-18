@@ -8,10 +8,18 @@
     <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
     <script src="https://unpkg.com/element-plus"></script>
     <style>
+        @font-face {
+            font-family: 'Roboto';
+            src: url("../../../src/modular/SourceHanSansSC-Medium.otf") format('opentype');
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto';
+        }
         #container{
             max-width: 503px;
             min-height: 300px;
-           
         }
     </style>
 </head>
@@ -25,24 +33,24 @@
                     </div>
                     <div>
                         <span style="font-size:40px ;">{{name}}</span><br>
-                        <spam style="font-size:10px ;">{{LinKing}}</spam>
+                        <spam style="font-size:10px ;overflow: hidden;">{{LinKing}}</spam>
                     </div>
                 </el-space>
             </template>
             <el-row :gutter="10">
                 <el-col :span="8">
                     <el-card>
-                        是否禁言：{{isnume}}
+                        是否禁言：<br>{{isnume?"已被禁言":"没有禁言"}}
                     </el-card>
                 </el-col>
                 <el-col :span="8">
                     <el-card>
-                        加入时间：{{joinTime}}
+                        加入时间：<br>{{joinTime}}
                     </el-card>
                 </el-col>
                 <el-col :span="8">
                     <el-card>
-                        发言时间：{{lastTime}}
+                        发言时间：<br>{{lastTime}}
                     </el-card>
                 </el-col>
               </el-row>

@@ -3,6 +3,10 @@ import moment from 'moment'
 import { Member } from 'oicq'
 moment(new Date()).format('YYYY-MM-DD')
 async function groupinfo(group: Member) {
+    while (group.info) {
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        break;
+    }
     return ({
         name: group?.info?.nickname ?? "获取失败！",
         Avatar: `https://q1.qlogo.cn/g?b=qq&s=100&nk=${group.uid}`,
