@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AtElem, Client, GroupMessageEvent, PrivateMessageEvent, TextElem } from "oicq";
 import { admins, groupc, signc } from "../config/config";
+import banwords from "./app/banworld";
 import { groupFriends } from "./app/groupcod";
 import { githelpData } from "./app/help/help";
 import { rules, runplugin } from "./app/plugin";
@@ -41,16 +42,25 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                         event.group.shareMusic("163", date.result.songs[0].id)
                     }
                 })
+                rules("#?一言", item, async () => {
+                    let date = await (await axios.get(`http://api.guaqb.cn/v1/onesaid/`)).data
+                    if (event.message_type === 'group') {
+                        event.reply(date)
+                    }
+                })
                 runplugin(event, item);
             })()
         }
     })
-    userprop(event, Bot);
+
+
 }
 
 async function group(event: GroupMessageEvent, Bot: Client) {
     groupValidation(event, Bot)
     groupAt(event, Bot)
+    userprop(event, Bot);
+    banwords(event, Bot);
 }
 async function groupValidation(event: GroupMessageEvent, Bot: Client) {
     let msg = event.message.find(msg => msg.type === 'text') as TextElem
