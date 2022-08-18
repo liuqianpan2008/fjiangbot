@@ -54,6 +54,15 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                         event.reply({ type: 'image', file: `base64://${await HtmlImg("grupinfo", await groupinfo(event.member), event.sender.user_id)}` })
                     }
                 })
+                rules("#?(=)(.*)", item, async () => {
+                    let calculate = item.text.split("=")[1]
+                    try {
+                        let result = String(await eval(calculate))
+                        event.reply(`计算结果：` + result)
+                    } catch (error) {
+                        console.log(error);
+                    }
+                })
                 runplugin(event, item);
             })()
         }
