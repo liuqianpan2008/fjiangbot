@@ -6,6 +6,7 @@ let keyworlds: { id: number, group: number, key: MessageElem[], world: MessageEl
 async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMessageEvent) {
     let con = mags.find(msg => msg.type == "text") as TextElem
     let keywords: MessageElem[] = []
+    //添加关键词
     if (new RegExp("#?关键词(.*)").test(con?.text ?? "")) {
         let key = con.text.split(new RegExp("#?关键词(.*)"))[1]
         let [, ...keys] = mags
@@ -41,6 +42,7 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
         event.reply("请输入回复内容")
         return;
     }
+    //添加回复
     if (keyworlds?.findIndex(item => item.id === event.sender.user_id) > -1) {
         let index = keyworlds?.findIndex(item => item.id === event.sender.user_id)
         keyworlds[index].world = mags
@@ -49,6 +51,7 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
         writekay()
         return;
     }
+    //触发关键词
     try {
         await readkay()
         for (let item of keyworlds) {
