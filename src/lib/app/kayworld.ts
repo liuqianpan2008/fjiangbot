@@ -5,9 +5,9 @@ import path from "path";
 async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMessageEvent) {
     let con = mags.find(msg => msg.type == "text") as TextElem
     //添加关键词
-    if (new RegExp("#?添加关键词(.*)").test(con?.text ?? "")) {
+    if (new RegExp("#?添加词条(.*)").test(con?.text ?? "")) {
         let keywords: MessageElem[] = []
-        let key = con.text.split(new RegExp("#?添加关键词(.*)"))[1]
+        let key = con.text.split(new RegExp("#?添加词条(.*)"))[1]
         let [, ...keys] = mags
         if (key) {
             keywords?.push({ type: "text", text: key }, ...keys)
@@ -18,32 +18,30 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
             event.reply("关键词内不可以包括图片")
             return
         }
-        let keyworlds: { id: number, group: number, key: MessageElem[], world: MessageElem[] }[] = await readkay()
+        let worldkey: { id: number, group: number, key: MessageElem[], world: MessageElem[] }[] = await readkay()
 
-        if (keyworlds?.findIndex(item => item.id === event.sender.user_id) > -1) {
+        if (worldkey?.findIndex(item => item.id === event.sender.user_id) > -1) {
             event.reply("你添加了关键词，请回复")
             return
         }
         if (event.message_type === 'group') {
-            keyworlds?.unshift({
+            worldkey?.unshift({
                 id: event.sender.user_id,
                 group: event.group_id,
                 key: keywords,
                 world: []
             })
         } else {
-            keyworlds?.unshift({
+            worldkey?.unshift({
                 id: event.sender.user_id,
                 group: 0,
                 key: keywords,
                 world: []
             })
         }
-
+        await writekay(worldkey)
         event.reply("请输入回复内容")
-        await writekay(keyworlds)
         setTimeout(async () => {
-            console.log("超时");
             let dalkeyworlds: { id: number, group: number, key: MessageElem[], world: MessageElem[] }[] = await readkay()
             for (let index = 0; index < dalkeyworlds.length; index++) {
                 const element = dalkeyworlds[index];
@@ -58,8 +56,8 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
         return;
     }
     // 删除关键词
-    if (new RegExp("#?删除关键词(.*)").test(con?.text ?? "")) {
-        let key = con.text.split(new RegExp("#?删除关键词(.*)"))[1]
+    if (new RegExp("#?删除词条(.*)").test(con?.text ?? "")) {
+        let key = con.text.split(new RegExp("#?删除词条(.*)"))[1]
         let [, ...keys] = mags
         let keywords: MessageElem[] = []
         if (key) {
@@ -67,17 +65,20 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
         } else {
             keywords?.push(...keys)
         }
-        let keyworlds = await readkay()
+        let worldkey: { id: number, group: number, key: MessageElem[], world: MessageElem[] }[] = await readkay()
         try {
-            for (let index = 0; index < keyworlds.length; index++) {
-                const element = keyworlds[index].key;
-                if (JSON.stringify(element) === JSON.stringify(keywords)) {
-                    keywords.splice(index, 1)
-                    writekay(keyworlds)
-                    event.reply("删除成功")
-                    return
-                }
+
+            let index = worldkey.findIndex(item => JSON.stringify(item.key) === JSON.stringify(keywords))
+            if (index > -1) {
+                worldkey.splice(index, 1)
+                console.log(worldkey);
+                writekay(worldkey)
+                event.reply("删除成功")
+            } else {
+                event.reply("没有找到该关键词")
             }
+
+
         } catch (e) {
             console.log(e);
 
@@ -87,22 +88,40 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
     }
     //查看关键词
     try {
-        if (new RegExp("#?查看关键词").test(con?.text ?? "")) {
+        if (new RegExp("#?查看词条").test(con?.text ?? "")) {
             let worlds: { id: number, group: number, key: MessageElem[], world: MessageElem[] }[] = []
             if (fs.existsSync(`${path.resolve()}/src/data/worlds.json`)) {
                 let data = fs.readFileSync(`${path.resolve()}/src/data/worlds.json`, "utf8")
                 worlds = JSON.parse(data)
-                // console.log(worlds);
             } else {
                 worlds = []
             }
             let ret: MessageElem[] = []
             if (worlds.length > 0) {
-                worlds.forEach(world => ret.push(...world?.key ?? "", { type: "text", text: "---" }, ...world?.world ?? ""), { type: "text", text: "\n" })
+                if (event.message_type === "group") {
+                    for (let index = 0; index < worlds?.length ?? 0; index++) {
+                        const element = worlds[index];
+                        if (element.group === (event as GroupMessageEvent).group_id) {
+                            ret.push(...element?.key ?? "", { type: "text", text: "---" }, ...element?.world ?? ""), { type: "text", text: `|` }
+                        }
+                    }
+                } else {
+                    for (let index = 0; index < worlds?.length ?? 0; index++) {
+                        const element = worlds[index];
+                        if (element.group === 0) {
+                            ret.push(...element?.key ?? "", { type: "text", text: "---" }, ...element?.world ?? ""), { type: "text", text: "\n" }
+                        }
+                    }
+                }
             } else {
                 ret.push({ type: "text", text: "暂无关键词" })
             }
-            event.reply(ret)
+            if (ret.length > 0) {
+                event.reply(ret)
+            } else {
+                event.reply("暂无关键词")
+            }
+
         }
     } catch (error) {
         console.log(error);
@@ -120,7 +139,7 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
     }
     //触发关键词
     try {
-        await readkay()
+        let keyworlds: { id: number, group: number, key: MessageElem[], world: MessageElem[] }[] = await readkay()
         for (let item of keyworlds) {
             if (event.message_type == "group" && item.group === event.group_id && JSON.stringify(item.key) === JSON.stringify(mags)) {
                 event.reply(item.world)
