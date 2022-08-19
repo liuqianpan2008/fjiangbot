@@ -69,6 +69,7 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
         }
     })
     addwrold(event.message, event)
+    userprop(event, Bot);
 }
 
 async function group(event: GroupMessageEvent, Bot: Client) {
