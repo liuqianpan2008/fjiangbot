@@ -5,6 +5,7 @@ import banwords from "./app/banworld";
 import { groupFriends } from "./app/groupcod";
 import groupinfo from "./app/groupinfo";
 import { githelpData } from "./app/help/help";
+import addwrold from "./app/kayworld";
 import { rules, runplugin } from "./app/plugin";
 import { userprop } from "./app/props";
 import { buyshop, goods, userinfo } from "./app/shop";
@@ -54,7 +55,7 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                         event.reply({ type: 'image', file: `base64://${await HtmlImg("grupinfo", await groupinfo(event.member), event.sender.user_id)}` })
                     }
                 })
-                rules("#?=\d+(\+|-|\*|\/)\d+", item, async () => {
+                rules("#?=(.*)", item, async () => {
                     let calculate = item.text.split("=")[1]
                     try {
                         let result = String(await eval(calculate))
@@ -67,8 +68,7 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
             })()
         }
     })
-
-
+    addwrold(event.message, event)
 }
 
 async function group(event: GroupMessageEvent, Bot: Client) {
