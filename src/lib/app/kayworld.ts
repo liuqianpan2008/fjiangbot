@@ -14,37 +14,29 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
         } else {
             keywords?.push(...keys)
         }
+        if (keywords.find(item => item.type === "image")) {
+            event.reply("关键词内不可以包括图片")
+            return
+        }
         if (keyworlds?.findIndex(item => item.id === event.sender.user_id) > -1) {
-            event.reply("请输入回复内容")
+            event.reply("你添加了关键词，请回复")
             return
         }
         await readkay()
         if (event.message_type === 'group') {
-            let worldi = keyworlds.findIndex(item => { JSON.stringify(item?.key) === JSON.stringify(keywords) })
-            if (worldi > -1) {
-                keyworlds[worldi].id = event.sender.user_id,
-                    keyworlds[worldi].key = keywords
-            } else {
-                keyworlds?.push({
-                    id: event.sender.user_id,
-                    group: event.group_id,
-                    key: keywords,
-                    world: []
-                })
-            }
+            keyworlds?.unshift({
+                id: event.sender.user_id,
+                group: event.group_id,
+                key: keywords,
+                world: []
+            })
         } else {
-            let worldi = keyworlds.findIndex(item => { JSON.stringify(item?.key) === JSON.stringify(keywords) })
-            if (worldi > -1) {
-                keyworlds[worldi].id = event.sender.user_id,
-                    keyworlds[worldi].key = keywords
-            } else {
-                keyworlds?.push({
-                    id: event.sender.user_id,
-                    group: 0,
-                    key: keywords,
-                    world: []
-                })
-            }
+            keyworlds?.unshift({
+                id: event.sender.user_id,
+                group: 0,
+                key: keywords,
+                world: []
+            })
         }
         event.reply("请输入回复内容")
         return;
