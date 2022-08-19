@@ -44,13 +44,17 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
         await writekay(keyworlds)
         setTimeout(async () => {
             console.log("超时");
-            let index = keyworlds?.findIndex(item => { return item.world.length === 0 && item.id === event.sender.user_id })
-            if (index > -1) {
-                keyworlds.splice(index, 1,)
-                await writekay(keyworlds)
-                event.reply("添加超时")
+            let dalkeyworlds: { id: number, group: number, key: MessageElem[], world: MessageElem[] }[] = await readkay()
+            for (let index = 0; index < dalkeyworlds.length; index++) {
+                const element = dalkeyworlds[index];
+                if (element.world.length === 0 && element.id === event.sender.user_id) {
+                    dalkeyworlds.splice(index, 1)
+                    await writekay(dalkeyworlds)
+                    event.reply("添加超时")
+                    return
+                }
             }
-        }, 5000)
+        }, 9000)
         return;
     }
     // 删除关键词
