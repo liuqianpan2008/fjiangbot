@@ -40,10 +40,18 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
             })
         }
         event.reply("请输入回复内容")
+        setTimeout(() => {
+            console.log("超时");
+            if (keyworlds?.findIndex(item => item.id === event.sender.user_id) > -1) {
+                let index = keyworlds?.findIndex(item => item.id === event.sender.user_id)
+                delete keyworlds[index]
+                event.reply("添加超时")
+            }
+        }, 15000)
         return;
     }
     //添加回复
-    if (keyworlds?.findIndex(item => item.id === event.sender.user_id) > -1) {
+    if (keyworlds?.findIndex(item => item?.id === event?.sender?.user_id) > -1) {
         let index = keyworlds?.findIndex(item => item.id === event.sender.user_id)
         keyworlds[index].world = mags
         keyworlds[index].id = 0
@@ -51,6 +59,8 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
         writekay()
         return;
     }
+    //五秒后触发
+
     //触发关键词
     try {
         await readkay()
