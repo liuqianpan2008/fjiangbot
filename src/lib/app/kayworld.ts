@@ -20,19 +20,31 @@ async function addkay(mags: MessageElem[], event: PrivateMessageEvent | GroupMes
         }
         await readkay()
         if (event.message_type === 'group') {
-            keyworlds?.push({
-                id: event.sender.user_id,
-                group: event.group_id,
-                key: keywords,
-                world: []
-            })
+            let worldi = keyworlds.findIndex(item => { JSON.stringify(item?.key) === JSON.stringify(keywords) })
+            if (worldi > -1) {
+                keyworlds[worldi].id = event.sender.user_id,
+                    keyworlds[worldi].key = keywords
+            } else {
+                keyworlds?.push({
+                    id: event.sender.user_id,
+                    group: event.group_id,
+                    key: keywords,
+                    world: []
+                })
+            }
         } else {
-            keyworlds?.push({
-                id: event.sender.user_id,
-                group: 0,
-                key: keywords,
-                world: []
-            })
+            let worldi = keyworlds.findIndex(item => { JSON.stringify(item?.key) === JSON.stringify(keywords) })
+            if (worldi > -1) {
+                keyworlds[worldi].id = event.sender.user_id,
+                    keyworlds[worldi].key = keywords
+            } else {
+                keyworlds?.push({
+                    id: event.sender.user_id,
+                    group: 0,
+                    key: keywords,
+                    world: []
+                })
+            }
         }
         event.reply("请输入回复内容")
         return;
