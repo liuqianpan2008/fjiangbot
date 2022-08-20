@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AtElem, Client, GroupMessageEvent, PrivateMessageEvent, segment, TextElem } from "oicq";
 import { admins, groupc, signc } from "../config/config";
+import { Aivoice } from "./app/Aivoice";
 import banwords from "./app/banworld";
 import { groupFriends } from "./app/groupcod";
 import groupinfo from "./app/groupinfo";
@@ -60,20 +61,26 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                 rules("#?榜单", item, async () => {
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("rankingList", await rankinglist(event), event.sender.user_id)}` })
                 })
-                rules("#?派蒙说(.*)", item, async () => {
-                    let text = item.text.split(new RegExp("#?派蒙说(.*)"))[1]
-                    await axios.get(`http://233366.proxy.nscc-gz.cn:8888/?text=${encodeURI(text)}&speaker=${encodeURI("派蒙")}&format=wav`)
+                rules("#?说(.*)", item, async () => {
+                    let data = item.text.split(new RegExp("#?说(.*)"))[1]
+                    if (data.indexOf("|") === -1) {
+                        return
+                    }
+                    let playtext = data.split("|")
+                    if (playtext.length === 2) {
 
-                    event.reply({
-                        type: "record",
-                        file: `http://233366.proxy.nscc-gz.cn:8888/?text=${encodeURI(text)}&speaker=${encodeURI("派蒙")}`,
-                    }).then(async (res) => {
-                        console.log("发送成功");
-
-                    }).catch(async (err) => {
-                        console.log(err);
-
-                    })
+                        if (Aivoice(playtext[0], playtext[1]) === -1) {
+                            event.reply("不支持本角色语音")
+                        } else {
+                            event.reply("接受指令成功!正在生成中....")
+                            event.reply({
+                                type: "record",
+                                file: Aivoice(playtext[0], playtext[1]) as string,
+                            }).catch(err => console.log(err))
+                        }
+                    } else {
+                        event.reply("参数错误")
+                    }
                 })
                 // rules("#?=\d(\\+|-|\\*|\\/)\d", item, async () => {
                 //     let calculate = item.text.split(new RegExp(""))[1]
