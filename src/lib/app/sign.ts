@@ -2,6 +2,7 @@ import path from "path"
 import fs from "fs"
 import { signc } from "../../config/config"
 type signinfo = {
+    name: string,
     id: Number,
     Gold: Number,
     day: Number,
@@ -16,6 +17,7 @@ async function sign(id: Number, name: string) {
         let signinfoi = data.findIndex(item => item.id === id)
         if (signinfoi === -1) {
             data.push({
+                name: name,
                 id: id,
                 Gold: gold,
                 day: 1,
@@ -34,6 +36,7 @@ async function sign(id: Number, name: string) {
         }
     } else {
         data.push({
+            name: name,
             id: id,
             Gold: gold,
             day: 1,

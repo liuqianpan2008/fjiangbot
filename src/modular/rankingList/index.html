@@ -1,0 +1,105 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../../src/modular/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <script src="https://unpkg.com/element-plus"></script>
+    <style>
+        #container,.box-card{
+            width: 450px;
+            min-height: 560px;
+        }
+        @font-face {
+            font-family: 'Roboto';
+            src: url("../../../src/modular/SourceHanSansSC-Medium.otf") format('opentype');
+        }
+        *{
+            font-family: 'Roboto';
+            /* 字体阴影 */
+            text-shadow: 1px 1px 1px #999;
+        }
+        .card-header{
+            text-align: center;
+            font: 3em sans-serif;
+        }
+        .boxCard{
+            width: 400px;
+            height: 150px;
+            position: relative;
+        }
+        .ranking{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            font-size: 1em;
+            border-radius: 50%;
+            z-index: 1;
+            background: rgb(255, 255, 255);
+            border: 1px solid rgb(0, 0, 0);
+            /* 阴影 */
+            box-shadow: 1px 1px 1px #999;
+        }
+        /* 高斯模糊 */
+        .blur{
+            filter: blur(10px);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            position: absolute;
+            z-index: -1;
+            background: rgb(255, 255, 255);
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <el-card>
+            <template #header>
+              <div class="card-header">
+                金币榜单
+              </div>
+            </template>
+            <el-space direction="vertical">
+                {{each data }}
+                <el-card class="boxCard" >
+                    <div style="display:flex; align-items: center">
+                        <div style="padding-right: 15px;">
+                            <el-avatar
+                            src="https://q1.qlogo.cn/g?b=qq&s=100&nk={{$value.id}}"
+                            :size="100"/>
+                        </div>
+                        <div style="display:flex; flex-direction: column">
+                            <span style="font-size: 18px;">
+                                {{$value.name}}
+                            </span>
+                            <span style="font-size: 10px;">
+                                金币数量:{{$value.Gold}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ranking">
+                        <div class="blur"></div>
+                        #{{$index+1}}
+                    </div>
+                </el-card>
+                {{/each}}
+            </el-space>
+        </el-card>
+    </div>
+    <script>
+        const { createApp } = Vue
+        createApp({
+          setup(){
+            return {}
+          }
+        }).use(ElementPlus).mount('#container')
+      </script>
+</body>
+</html>

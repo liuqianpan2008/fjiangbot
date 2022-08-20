@@ -11,6 +11,7 @@ import { userprop } from "./app/props";
 import { buyshop, goods, userinfo } from "./app/shop";
 import { sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
+import rankinglist from "./rankingList";
 async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Client) {
     let msg = event.message
     msg.forEach(async (item) => {
@@ -53,6 +54,11 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                 rules("#?个人信息", item, async () => {
                     if (event.message_type === 'group') {
                         event.reply({ type: 'image', file: `base64://${await HtmlImg("grupinfo", await groupinfo(event.member), event.sender.user_id)}` })
+                    }
+                })
+                rules("#?榜单", item, async () => {
+                    if (event.message_type === 'group') {
+                        event.reply({ type: 'image', file: `base64://${await HtmlImg("rankingList", await rankinglist(event), event.sender.user_id)}` })
                     }
                 })
                 // rules("#?=\d(\\+|-|\\*|\\/)\d", item, async () => {
