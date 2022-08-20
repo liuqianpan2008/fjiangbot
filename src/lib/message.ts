@@ -1,9 +1,10 @@
 import axios from "axios";
-import { AtElem, Client, GroupMessageEvent, PrivateMessageEvent, TextElem } from "oicq";
+import { AtElem, Client, GroupMessageEvent, PrivateMessageEvent, segment, TextElem } from "oicq";
 import { admins, groupc, signc } from "../config/config";
 import banwords from "./app/banworld";
 import { groupFriends } from "./app/groupcod";
 import groupinfo from "./app/groupinfo";
+import { data } from "./app/help/data";
 import { githelpData } from "./app/help/help";
 import addwrold from "./app/kayworld";
 import { rules, runplugin } from "./app/plugin";
@@ -57,9 +58,22 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                     }
                 })
                 rules("#?榜单", item, async () => {
-                    if (event.message_type === 'group') {
-                        event.reply({ type: 'image', file: `base64://${await HtmlImg("rankingList", await rankinglist(event), event.sender.user_id)}` })
-                    }
+                    event.reply({ type: 'image', file: `base64://${await HtmlImg("rankingList", await rankinglist(event), event.sender.user_id)}` })
+                })
+                rules("#?派蒙说(.*)", item, async () => {
+                    let text = item.text.split(new RegExp("#?派蒙说(.*)"))[1]
+                    await axios.get(`http://233366.proxy.nscc-gz.cn:8888/?text=${encodeURI(text)}&speaker=${encodeURI("派蒙")}&format=wav`)
+
+                    event.reply({
+                        type: "record",
+                        file: `http://233366.proxy.nscc-gz.cn:8888/?text=${encodeURI(text)}&speaker=${encodeURI("派蒙")}`,
+                    }).then(async (res) => {
+                        console.log("发送成功");
+
+                    }).catch(async (err) => {
+                        console.log(err);
+
+                    })
                 })
                 // rules("#?=\d(\\+|-|\\*|\\/)\d", item, async () => {
                 //     let calculate = item.text.split(new RegExp(""))[1]
