@@ -6,7 +6,8 @@ type QQcT = {
     qq: number,
     password?: string,
     log: LogLevel,
-    platform: Platform
+    platform: Platform,
+    ffmpeg: string
 }
 // 类型“String”的参数不能赋给类型“string | number | RecurrenceRule | RecurrenceSpecDateRange | RecurrenceSpecObjLit | Date”的参数。
 
@@ -18,6 +19,7 @@ type groupT = {
     curfewEndTime: string | number | Date,
     Isadmin: boolean,
     props: Array<Number>,
+    banwords: Array<string>,
 }
 type signT = {
     Issign: boolean,
@@ -43,7 +45,8 @@ let QQc: QQcT = {
     qq: 161009029,
     password: '13393280310a',
     log: "info",
-    platform: Platform.aPad
+    platform: Platform.aPad,
+    ffmpeg: ""//语音需求需要ffmpeg
 };
 let groupc: Map<number, groupT> = new Map([
     // 默认配置
@@ -55,7 +58,8 @@ let groupc: Map<number, groupT> = new Map([
         curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间 需要Cron表达式
         curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间 需要Cron表达式
         Isadmin: true,//是否管理员使用群管功能
-        props: []//禁止使用的道具
+        props: [],//禁止使用的道具
+        banwords: ["违禁词测试"]//违禁词，支持正则！
     }],
     // 单独配置
     [877894787, {
@@ -66,7 +70,8 @@ let groupc: Map<number, groupT> = new Map([
         curfewTime: "0 0 22 ? * ? ?",//宵禁开始时间
         curfewEndTime: "0 0 7 ? * ? ",//宵禁结束时间
         Isadmin: true,
-        props: []//禁止使用道具
+        props: [],//禁止使用道具
+        banwords: []//违禁词，支持正则会继承默认配置！
     }],
 ]);
 let signc: signT = {

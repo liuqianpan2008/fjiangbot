@@ -8,6 +8,7 @@ const QQbot = createClient(QQc.qq, {
     platform: QQc.platform,
     resend: false,
     data_dir: './src/data',
+    ffmpeg_path: QQc.ffmpeg
 })
 //密码 or 扫码登陆
 QQbot.on('system.login.qrcode', (_e) => {
