@@ -29,7 +29,7 @@ function russianRoulette(event: PrivateMessageEvent | GroupMessageEvent, Bot: Cl
             bulletrandom[random(0, 5)] = 1
 
         }
-        let index = random(0, bulletrandom.length)
+        let index = random(0, bulletrandom.length - 1)
         console.log(bulletrandom, bulletrandom.length, index);
         if (bulletrandom[index] === 1) {
             event.reply("您已死亡,将丢失所有奖金")
