@@ -42,6 +42,7 @@ type cdkT = {
     cdk: string,
 }
 type russianRouletteT = {
+    isopen: boolean,
     MaxGold: number,//每轮获取到最大金币
     MinGold: number,//每轮获取到最小金币
     reward: number,//最后胜利奖励金币数
@@ -88,6 +89,7 @@ let signc: signT = {
 }
 let admins: Array<number> = [2180323481];//管理员QQ号
 let russianRoulette: russianRouletteT = {
+    isopen: true,//是否开启转轮
     MaxGold: 10,//每轮获取到最大金币
     MinGold: 1,//每轮获取到最小金币
     reward: 100,//最后胜利奖励金币数

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AtElem, Client, GroupMessageEvent, PrivateMessageEvent, segment, TextElem } from "oicq";
-import { admins, groupc, signc } from "../config/config";
+import { admins, groupc, russianRouletteConfig, signc } from "../config/config";
 import { Aivoice } from "./app/Aivoice";
 import banwords from "./app/banworld";
 import { groupFriends } from "./app/groupcod";
@@ -11,7 +11,7 @@ import { rules, runplugin } from "./app/plugin";
 import { userprop } from "./app/props";
 import { gameover, russianRoulette } from "./app/russianRoulette";
 import { buyshop, goods, userinfo } from "./app/shop";
-import { addGold, sign } from "./app/sign";
+import { addGold, getGold, sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
 import rankinglist from "./rankingList";
 async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Client) {
@@ -28,7 +28,7 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                     }
                 })
                 rules("#?枫酱超市$", item, async () => {
-                    event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.sender.user_id, Bot))}` })
+                    event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.sender.user_id, Bot), event.sender.user_id)}` })
                 })
                 rules("#?个人仓库$", item, async () => {
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
@@ -82,12 +82,14 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                         event.reply("参数错误")
                     }
                 })
-                rules("#?俄罗斯转盘", item, async () => {
-                    russianRoulette(event, Bot)
-                })
-                rules("#?结束转盘", item, async () => {
-                    gameover(event)
-                })
+                if (russianRouletteConfig.isopen) {
+                    rules("#?俄罗斯转盘$", item, async () => {
+                        russianRoulette(event, Bot)
+                    })
+                    rules("#?结束转盘$", item, async () => {
+                        gameover(event)
+                    })
+                }
                 // rules("#?=\d(\\+|-|\\*|\\/)\d", item, async () => {
                 //     let calculate = item.text.split(new RegExp(""))[1]
                 //     console.log(calculate);
@@ -199,7 +201,7 @@ async function groupAt(event: GroupMessageEvent, Bot: Client) {
                 Gold = 0
             }
             if (addGold(msgAt.qq as number, Gold)) {
-                await event.group.sendMsg(`已经对${msgAt.text}获得金币${Gold}`)
+                await event.group.sendMsg(`已经对${msgAt.text}获得金币${Gold},他现在的金币为${getGold(msgAt.qq as number)}`)
             } else {
                 await event.group.sendMsg(`请先使用签到初始化数据`)
             }
