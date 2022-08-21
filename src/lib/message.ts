@@ -11,7 +11,7 @@ import { rules, runplugin } from "./app/plugin";
 import { userprop } from "./app/props";
 import { gameover, russianRoulette } from "./app/russianRoulette";
 import { buyshop, goods, userinfo } from "./app/shop";
-import { sign } from "./app/sign";
+import { addGold, sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
 import rankinglist from "./rankingList";
 async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Client) {
@@ -184,6 +184,25 @@ async function groupAt(event: GroupMessageEvent, Bot: Client) {
                 await event.group.sendMsg("发生错误，踢出失败！")
             }
 
+        } else {
+            await event.group.sendMsg("条件不满足")
+        }
+    }
+    if (new RegExp("#?给钱$", "m").test(msgT?.text ?? "")) {
+        Bot.logger.info("收到指令：给钱")
+        if (msgAt && ((c?.Isadmin ? event.member.is_admin : true) || admins.find(item => { return item === event.member.uid }))) {
+            let mags = event.message
+            mags.splice(mags.findIndex(msg => msg.type === 'at'), 1)
+            // 去除空格
+            let Gold = Number((mags[1] as TextElem).text.trim())
+            if (Gold === 0) {
+                Gold = 0
+            }
+            if (addGold(msgAt.qq as number, Gold)) {
+                await event.group.sendMsg(`已经对${msgAt.text}获得金币${Gold}`)
+            } else {
+                await event.group.sendMsg(`请先使用签到初始化数据`)
+            }
         } else {
             await event.group.sendMsg("条件不满足")
         }
