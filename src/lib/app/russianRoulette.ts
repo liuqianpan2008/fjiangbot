@@ -9,11 +9,14 @@ function russianRoulette(event: PrivateMessageEvent | GroupMessageEvent, Bot: Cl
             event.reply("请先使用#签到指令初始化数据")
             return;
         } else {
-            if ((getGold(event.sender.user_id) as Number) < russianRouletteConfig.BayGold) {
-                event.reply(`您的奖金不足${russianRouletteConfig.BayGold}元,无法开启游戏`)
-                return;
-            } else {
-                reduceGold(event.sender.user_id, russianRouletteConfig.BayGold)
+            if (palying.get(event.sender.user_id) === undefined) {
+                if ((getGold(event.sender.user_id) as Number) < russianRouletteConfig.BayGold) {
+                    event.reply(`您的奖金不足${russianRouletteConfig.BayGold}元,无法开启游戏`)
+                    return;
+                } else {
+                    reduceGold(event.sender.user_id, russianRouletteConfig.BayGold)
+                    event.reply(`您的奖金减少${russianRouletteConfig.BayGold}元,当前剩余${getGold(event.sender.user_id)}元`)
+                }
             }
         }
 
@@ -22,10 +25,12 @@ function russianRoulette(event: PrivateMessageEvent | GroupMessageEvent, Bot: Cl
             getGold1(event.sender.user_id, 0)
         }
         let bulletrandom = palying.get(event.sender.user_id) as Number[]
-        console.log(bulletrandom);
+        if (!bulletrandom.find(x => x === 1)) {
+            bulletrandom[random(0, 5)] = 1
 
-        bulletrandom[random(0, 5)] = 1
-        let index = random(0, 5)
+        }
+        let index = random(0, bulletrandom.length)
+        console.log(bulletrandom, bulletrandom.length, index);
         if (bulletrandom[index] === 1) {
             event.reply("您已死亡,将丢失所有奖金")
             palying?.delete(event.sender.user_id)
@@ -33,6 +38,7 @@ function russianRoulette(event: PrivateMessageEvent | GroupMessageEvent, Bot: Cl
             event.group.muteMember(event.sender.user_id, russianRouletteConfig.Banned)
         } else {
             bulletrandom.splice(index, 1)
+            palying.set(event.sender.user_id, bulletrandom)
             if (bulletrandom.length === 1) {
                 getGold1(event.sender.user_id, russianRouletteConfig.reward)
                 gameover(event)
