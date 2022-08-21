@@ -1,5 +1,6 @@
 import axios from "axios";
 import { AtElem, Client, GroupMessageEvent, PrivateMessageEvent, segment, TextElem } from "oicq";
+import path from "path";
 import { admins, groupc, russianRouletteConfig, signc } from "../config/config";
 import { Aivoice } from "./app/Aivoice";
 import banwords from "./app/banworld";
@@ -90,6 +91,10 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                         gameover(event)
                     })
                 }
+                rules("#?疯狂星期四", item, async () => {
+                    event.reply('收到指令，准备发送！')
+                    event.reply(segment.video(`${path.resolve()}/src/modular/video/v50.mp4`)).catch(err => console.log(err))
+                })
                 // rules("#?=\d(\\+|-|\\*|\\/)\d", item, async () => {
                 //     let calculate = item.text.split(new RegExp(""))[1]
                 //     console.log(calculate);

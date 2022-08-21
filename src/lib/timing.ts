@@ -1,6 +1,7 @@
 import events from 'inquirer/lib/utils/events';
 import schedule from 'node-schedule';
-import { Client } from 'oicq';
+import { Client, segment } from 'oicq';
+import path from 'path';
 import { groupc } from '../config/config';
 import { HtmlImg } from './puppeteer';
 
@@ -36,6 +37,17 @@ async function timing(bot: Client) {
             })
             bot.logger.info(`${group.group_id} 宵禁任务已启动`)
         }
+    })
+    // 每周四中午12点执行一次
+    let Time = schedule.scheduleJob('0 0 12 * * 4', async () => {
+        bot.logger.info('执行KFC任务');
+        bot.getGroupList().forEach(async (group) => {
+            bot.sendGroupMsg(group.group_id,
+                segment.video(`${path.resolve()}/src/modular/video/v50.mp4`))
+                .catch(err => bot.logger.error(err));
+            await new Promise(resolve => setTimeout(resolve, 5000));
+        })
+        bot.logger.info(`CFK下次执行时间${Time.nextInvocation().toLocaleString()}`)
     })
 }
 export default timing;
