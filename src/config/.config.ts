@@ -41,12 +41,19 @@ type cdkT = {
     cod: "未使用" | "已使用",
     cdk: string,
 }
+type russianRouletteT = {
+    MaxGold: number,//每轮获取到最大金币
+    MinGold: number,//每轮获取到最小金币
+    reward: number,//最后胜利奖励金币数
+    Banned: number,//死亡后禁言时长，单位秒
+    BayGold: number,//参加一次转轮所需金币数
+}
 let QQc: QQcT = {
     qq: 161009029,
-    password: '13393280310a',
+    password: '',
     log: "info",
     platform: Platform.aPad,
-    ffmpeg: ""//语音需求需要ffmpeg
+    ffmpeg: ""
 };
 let groupc: Map<number, groupT> = new Map([
     // 默认配置
@@ -80,6 +87,13 @@ let signc: signT = {
     MinGold: 1//最小金币
 }
 let admins: Array<number> = [2180323481];//管理员QQ号
+let russianRoulette: russianRouletteT = {
+    MaxGold: 10,//每轮获取到最大金币
+    MinGold: 1,//每轮获取到最小金币
+    reward: 100,//最后胜利奖励金币数
+    Banned: 60,//死亡后禁言时长，单位秒
+    BayGold: 10,//参加一次转轮所需金币数
+}
 let props: Array<propT> = [{
     //道具图片在modular/shop/icon文件夹下命名规则：id.png
     id: 1,
@@ -115,4 +129,4 @@ let props: Array<propT> = [{
     price: 1000,
     effect: 1
 }]
-export { QQc, groupc, signc, admins, props, propT, groupT, cdkT, cdksT };
+export { QQc, groupc, signc, admins, props, propT, groupT, cdkT, cdksT, russianRoulette };

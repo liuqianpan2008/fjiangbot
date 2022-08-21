@@ -5,11 +5,11 @@ import { Aivoice } from "./app/Aivoice";
 import banwords from "./app/banworld";
 import { groupFriends } from "./app/groupcod";
 import groupinfo from "./app/groupinfo";
-import { data } from "./app/help/data";
 import { githelpData } from "./app/help/help";
 import addwrold from "./app/kayworld";
 import { rules, runplugin } from "./app/plugin";
 import { userprop } from "./app/props";
+import { gameover, russianRoulette } from "./app/russianRoulette";
 import { buyshop, goods, userinfo } from "./app/shop";
 import { sign } from "./app/sign";
 import { HtmlImg } from "./puppeteer";
@@ -81,6 +81,12 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                     } else {
                         event.reply("参数错误")
                     }
+                })
+                rules("#?俄罗斯转盘", item, async () => {
+                    russianRoulette(event, Bot)
+                })
+                rules("#?结束转盘", item, async () => {
+                    gameover(event)
                 })
                 // rules("#?=\d(\\+|-|\\*|\\/)\d", item, async () => {
                 //     let calculate = item.text.split(new RegExp(""))[1]
