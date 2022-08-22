@@ -113,4 +113,4 @@ function subString(str: string, len: number) {
     }
     return s;
 }
-export { Videoinfo, sanlian, operationVideo, comment } 
+export { Videoinfo, sanlian, operationVideo } 
