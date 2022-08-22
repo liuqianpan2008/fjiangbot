@@ -4,6 +4,7 @@ import path from "path";
 import { admins, groupc, russianRouletteConfig, signc } from "../config/config";
 import { Aivoice } from "./app/Aivoice";
 import banwords from "./app/banworld";
+import bilibili from "./app/bilibili";
 import { groupFriends } from "./app/groupcod";
 import groupinfo from "./app/groupinfo";
 import { githelpData } from "./app/help/help";
@@ -106,9 +107,13 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                 //     }
                 // })
                 runplugin(event, item);
+
             })()
         }
     })
+    if (event.message_type === 'private') {
+        bilibili(event, Bot)
+    }
     addwrold(event.message, event)
     userprop(event, Bot);
 }
