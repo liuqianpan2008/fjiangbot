@@ -13,7 +13,6 @@ async function timing(bot: Client) {
     bot.getGroupList().forEach(async (group) => {
         let c = groupc.get(group.group_id) ?? groupc.get(1);
         if (c?.Iscurfew === true) {
-            console.log(c.curfewTime);
             let startTime = schedule.scheduleJob(c.curfewTime, async () => {
                 await bot.sendGroupMsg(group.group_id, {
                     type: "image",
