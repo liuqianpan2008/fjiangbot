@@ -38,7 +38,7 @@ async function timing(bot: Client) {
                 await bot.pickGroup(group.group_id).muteAll(false)
                 bot.logger.info(`${group.group_id}宵禁关闭，下次宵禁将在${formatTime(endTime.nextInvocation())}关闭`);
             })
-            bot.logger.info(`宵禁将在${formatTime(endTime?.nextInvocation() ?? 0)}关闭`);
+            bot.logger.info(`群${group.group_id}宵禁将在${formatTime(endTime?.nextInvocation() ?? 0)}关闭`);
         }
     })
     // 每周四中午12点执行一次
