@@ -1,4 +1,4 @@
-import { Live } from "bilicaptain/lib";
+import { Live, User } from "bilicaptain";
 import { readBiliCredential } from "./login"
 async function livesign(qq: number) {
     let Bilidata = readBiliCredential(qq)
@@ -12,7 +12,7 @@ async function livesign(qq: number) {
             return error.message;
         }
     } else {
-        return "请先使用#登陆功能，登陆B战"
+        return "请先使用#登陆功能，登陆B站"
     }
 
 }

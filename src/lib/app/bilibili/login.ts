@@ -1,4 +1,4 @@
-import { Login, BiliCredential, Live } from 'bilicaptain'
+import { Login, BiliCredential, User } from 'bilicaptain'
 import fs from 'fs'
 import { PrivateMessageEvent, segment, Sendable } from 'oicq'
 import path from 'path'
@@ -8,7 +8,7 @@ type bilibilidata = {
 }
 async function bilibililogin(id: number, event: PrivateMessageEvent): Promise<Sendable> {
     let data: bilibilidata[] = []
-    event.reply("请不要扫描不信任的机器人的二维码！")
+
     if (checkFile(`${path.resolve()}/src/data/bilibili.json`)) {
         data = (readFile(`${path.resolve()}/src/data/bilibili.json`) as unknown as bilibilidata[]) ?? []
     } else {
@@ -18,14 +18,16 @@ async function bilibililogin(id: number, event: PrivateMessageEvent): Promise<Se
     if (data.find(item => item.qq === id)) {
         return "你已经登陆过了"
     }
-    let logo = await Login.loginQR('buffer', (BiliCredential) => {
+    let logo = await Login.loginQR('buffer', async (BiliCredential) => {
         data.push({
             qq: id,
             bilibili: BiliCredential
         })
+        await new User(BiliCredential).follow(1, 11, 156627564)
         writeFile(`${path.resolve()}/src/data/bilibili.json`, data)
-        event.reply("登录成功")
+        event.reply("登录成功！(自动关注作者B站)")
     }) as Buffer
+    event.reply("请不要扫描不信任的机器人的二维码！")
     return segment.image(logo)
 }
 //读取文件
