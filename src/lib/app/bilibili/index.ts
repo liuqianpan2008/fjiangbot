@@ -1,7 +1,7 @@
 import { Client, PrivateMessageEvent } from "oicq";
 import { rules } from "../plugin";
-import { bilibililogin, livesign } from "./login";
-
+import { bilibililogin } from "./login";
+import livesign from "./live";
 function bilibili(event: PrivateMessageEvent, Bot: Client) {
     // rules()
     event.message.forEach(msg => {
@@ -19,3 +19,5 @@ function bilibili(event: PrivateMessageEvent, Bot: Client) {
     })
 }
 export default bilibili;
+
+

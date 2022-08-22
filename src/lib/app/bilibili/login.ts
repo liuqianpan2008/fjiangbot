@@ -45,21 +45,6 @@ function readBiliCredential(qq: number) {
 function checkFile(filePath: string) {
     return fs.existsSync(filePath)
 }
-async function livesign(qq: number) {
-    let BiliCredential = readBiliCredential(qq)
-    if (BiliCredential) {
-        try {
-            let R = await new Live(BiliCredential).sign()
-            console.log(JSON.stringify(R));
-            return `签到成功！获得${R.text}`
 
-        } catch (error: any) {
-            return error.message;
-        }
-    } else {
-        return "请先使用#登陆功能，登陆B战"
-    }
 
-}
-
-export { bilibililogin, livesign } 
+export { bilibililogin, readBiliCredential } 
