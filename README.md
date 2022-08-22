@@ -53,35 +53,35 @@
 
 <details>
 <summary>B站相关</summary>
-  B站信息
+  B站信息<br>
   <img src="https://user-images.githubusercontent.com/80571808/186034633-2461c481-da71-4466-8cca-9799d18e214b.jpg">
-  B站视频
+  B站视频<br>
   <img src="https://user-images.githubusercontent.com/80571808/186034694-5571d191-7b26-4713-97b3-1919615889f0.png">
-  直播签到
+  直播签到<br>
     <img src="https://user-images.githubusercontent.com/80571808/186034626-32918045-25b4-4db5-936f-3c6c4bf00e26.png">
 </details>
 
 <details>
 <summary>道具系统</summary>
-枫酱超市
+枫酱超市<br>
   <img src="https://user-images.githubusercontent.com/80571808/186034711-5dd5cf8c-947a-471e-8420-f63c161536c1.jpg">
-  个人仓库
+  个人仓库<br>
   <img src="https://user-images.githubusercontent.com/80571808/186034723-94eacb7c-d769-4d72-a698-cfafad185aab.jpg">
 </details>
 
 <details>
 <summary>群管</summary>
-  群信息
+  群信息<br>
   <img src="https://user-images.githubusercontent.com/80571808/186034664-c4c7796f-7128-4cca-8dc1-161d324c8e89.jpg">
-  群管理
+  群管理<br>
   <img src="https://user-images.githubusercontent.com/80571808/184520315-912539ad-6378-48d2-869d-a0f7ca0e9af8.png">
 </details>
 
 <details>
 <summary>其他小功能（直接调用api）</summary>
-  疯狂星期四（每周四中午12点发送）
+  疯狂星期四（每周四中午12点发送）<br>
   <img src="https://user-images.githubusercontent.com/80571808/186034609-e2b1c82c-0c72-4af2-b3dc-4a8ba47f0fcf.png">
-  派蒙说（AI语音）
+  派蒙说（AI语音）<br>
   <img src="https://user-images.githubusercontent.com/80571808/186034616-0034503e-10c2-48c8-934f-87134e43c75f.png">
 </details>
 
