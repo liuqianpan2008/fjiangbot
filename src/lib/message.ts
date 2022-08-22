@@ -113,7 +113,7 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                         })
                     }
                 })
-                rules("^#?三连$", item, async () => {
+                rules("^#?三连(.*)$", item, async () => {
                     //去文本右边
                     let bv = item.text.split(new RegExp("#?三连"))[1]
                     let res = await sanlian(event.sender.user_id, bv)

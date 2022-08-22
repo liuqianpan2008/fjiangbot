@@ -28,6 +28,16 @@ let data: Array<dataT> = [
         "icon": urlicon + "qt.jpg",
     },
     {
+        "name": "#关键词",
+        "describe": "添加｜删除｜查看关键词",
+        "icon": urlicon + "gjc.jpeg",
+    },
+    {
+        "name": "#转盘",
+        "describe": "#俄罗斯转盘｜#结束转盘",
+        "icon": urlicon + "zp.jpeg",
+    },
+    {
         "name": "其他功能",
         "describe": "正在🔥开发中",
         "icon": urlicon + "qt.jpg",
