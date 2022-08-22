@@ -142,6 +142,7 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                 //         console.log(error);
                 //     }
                 // })
+
                 runplugin(event, item);
             })()
         }

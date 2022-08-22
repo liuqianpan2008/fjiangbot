@@ -52,4 +52,4 @@ function checkFile(filePath: string) {
 }
 
 
-export { bilibililogin, readBiliCredential } 
+export { bilibililogin, readBiliCredential, bilibilidata } 
