@@ -23,10 +23,12 @@ async function timing(bot: Client) {
                     }, group.group_id)}`
                 });
                 await bot.pickGroup(group.group_id).muteAll(true)
-                bot.logger.info(`${group.group_id}宵禁已开闭，下次宵禁将在${formatTime(startTime.nextInvocation())}开启`);
+                bot.logger.info(`${group.group_id}宵禁已开启，下次宵禁将在${formatTime(startTime.nextInvocation())}开启`);
             })
             bot.logger.info(`群${group.group_id}宵禁已开闭，宵禁将在${formatTime(startTime?.nextInvocation() ?? 0)}开启`);
+
             let endTime = schedule.scheduleJob(c.curfewEndTime, async () => {
+                await bot.pickGroup(group.group_id).muteAll(false)
                 await bot.sendGroupMsg(group.group_id, {
                     type: "image",
                     file: `base64://${await HtmlImg("curfew", {
@@ -35,7 +37,6 @@ async function timing(bot: Client) {
                         content: "已关闭宵禁模式"
                     }, group.group_id)}`
                 });
-                await bot.pickGroup(group.group_id).muteAll(false)
                 bot.logger.info(`${group.group_id}宵禁关闭，下次宵禁将在${formatTime(endTime.nextInvocation())}关闭`);
             })
             bot.logger.info(`群${group.group_id}宵禁将在${formatTime(endTime?.nextInvocation() ?? 0)}关闭`);
