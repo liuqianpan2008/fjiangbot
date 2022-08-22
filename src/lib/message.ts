@@ -5,6 +5,8 @@ import { admins, groupc, russianRouletteConfig, signc } from "../config/config";
 import { Aivoice } from "./app/Aivoice";
 import banwords from "./app/banworld";
 import bilibili from "./app/bilibili";
+import livesign from "./app/bilibili/live";
+import { operationVideo, sanlian, Videoinfo } from "./app/bilibili/video";
 import { groupFriends } from "./app/groupcod";
 import groupinfo from "./app/groupinfo";
 import { githelpData } from "./app/help/help";
@@ -24,23 +26,23 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                 rules("#?帮助$", item, async () => {
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("help", await githelpData(Bot))}` })
                 })
-                rules("#?签到$", item, async () => {
+                rules("^#?签到$", item, async () => {
                     if (signc.Issign) {
                         event.reply({ type: 'image', file: `base64://${await HtmlImg("sign", await sign(event.sender.user_id, event.nickname), event.sender.user_id)}` })
                     }
                 })
-                rules("#?枫酱超市$", item, async () => {
+                rules("^#?枫酱超市$", item, async () => {
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", goods(event.sender.user_id, Bot), event.sender.user_id)}` })
                 })
-                rules("#?个人仓库$", item, async () => {
+                rules("^#?个人仓库$", item, async () => {
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
                 })
-                rules("#?购买道具(.*)$", item, async () => {
+                rules("^#?购买道具(.*)$", item, async () => {
                     let goodsid = item.text.split("具")[1].trim()
                     await event.reply(buyshop(event.sender.user_id, Number(goodsid)))
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("shop", userinfo(event.sender.user_id), event.sender.user_id)}` })
                 })
-                rules("#?点歌(.*)", item, async () => {
+                rules("^#?点歌(.*)", item, async () => {
                     let song = item.text.split("歌")[1]
                     console.log(song);
                     let date = await (await axios.get(`https://cloud-music-api-f494k233x-mgod-monkey.vercel.app/search?keywords=${encodeURI(song)}`)).data
@@ -96,6 +98,36 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                     event.reply('收到指令，准备发送！')
                     event.reply(segment.video(`${path.resolve()}/src/modular/video/v50.mp4`)).catch(err => console.log(err))
                 })
+                rules("^#查询(.*)$", item, async () => {
+                    //去文本右边
+                    let bv = item.text.split(new RegExp("#查询"))[1]
+                    console.log(bv);
+                    let res = await Videoinfo(event.sender.user_id, bv)
+                    if (res) {
+                        event.reply("开始查询请稍等！")
+                        event.reply(res).then(res => { }).catch(err => {
+                            Bot.logger.debug(err)
+                        }).then(res => {
+                            event.reply("查询完成!,回复 #同意三连 可以快速给视频三连")
+                        })
+                    }
+                })
+                rules("^#?三连$", item, async () => {
+                    //去文本右边
+                    let bv = item.text.split(new RegExp("#?三连"))[1]
+                    let res = await sanlian(event.sender.user_id, bv)
+                    if (res) {
+                        event.reply(res).then(res => { }).catch(err => {
+                            console.log(err)
+                        })
+                    }
+                })
+                rules("^#?B签到$", item, async () => {
+                    let res = await livesign(event.sender.user_id)
+                    if (res) {
+                        event.reply(res)
+                    }
+                })
                 // rules("#?=\d(\\+|-|\\*|\\/)\d", item, async () => {
                 //     let calculate = item.text.split(new RegExp(""))[1]
                 //     console.log(calculate);
@@ -107,13 +139,13 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                 //     }
                 // })
                 runplugin(event, item);
-
             })()
         }
     })
     if (event.message_type === 'private') {
         bilibili(event, Bot)
     }
+    operationVideo(event)
     addwrold(event.message, event)
     userprop(event, Bot);
 }
