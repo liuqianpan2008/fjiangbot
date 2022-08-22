@@ -12,7 +12,7 @@ async function livesign(qq: number) {
             return error.message;
         }
     } else {
-        return "请先使用#登陆功能，登陆B站"
+        return "请先使用 #登陆 功能，登陆B站"
     }
 
 }
