@@ -1,4 +1,4 @@
-import { Live, User } from "bilicaptain";
+import { Live } from "bilicaptain";
 import { readBiliCredential } from "./login"
 async function livesign(qq: number) {
     let Bilidata = readBiliCredential(qq)

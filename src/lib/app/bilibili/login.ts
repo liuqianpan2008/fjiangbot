@@ -2,6 +2,8 @@ import { Login, BiliCredential, User } from 'bilicaptain'
 import fs from 'fs'
 import { PrivateMessageEvent, segment, Sendable } from 'oicq'
 import path from 'path'
+import { HtmlImg } from '../../puppeteer'
+import { UserInfo } from './user'
 type bilibilidata = {
     qq: number,
     bilibili: BiliCredential
@@ -26,6 +28,7 @@ async function bilibililogin(id: number, event: PrivateMessageEvent): Promise<Se
         await new User(BiliCredential).follow(1, 11, 156627564)
         writeFile(`${path.resolve()}/src/data/bilibili.json`, data)
         event.reply("登录成功！(自动关注作者B站)")
+        event.reply({ type: 'image', file: `base64://${await HtmlImg("sign", await UserInfo(event.sender.user_id), event.sender.user_id)}` })
     }) as Buffer
     event.reply("请不要扫描不信任的机器人的二维码！")
     return segment.image(logo)

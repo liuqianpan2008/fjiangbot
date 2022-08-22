@@ -1,6 +1,8 @@
 import { Client, PrivateMessageEvent } from "oicq";
+import { HtmlImg } from "../../puppeteer";
 import { rules } from "../plugin";
 import { bilibililogin } from "./login";
+import { UserInfo } from "./user";
 function bilibili(event: PrivateMessageEvent, Bot: Client) {
     event.message.forEach(msg => {
         if (msg.type === "text") {
