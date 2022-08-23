@@ -2,7 +2,6 @@ import { User } from "bilicaptain";
 import { UserInfoFromSearch } from "bilicaptain/lib/types/user";
 import { Client, Forwardable, segment, Sendable } from "oicq";
 import { readBiliCredential } from "./login";
-import http from "https";
 async function UserInfo(qq: number) {
     let Bilidata = readBiliCredential(qq)
     if (Bilidata) {
@@ -48,22 +47,4 @@ async function SearchUser(name: string, Bot: Client): Promise<Sendable> {
         return error.message;
     }
 }
-//关注
-async function Follow(qq: number, id: number): Promise<Sendable> {
-    let Bilidata = readBiliCredential(qq)
-    if (Bilidata) {
-        try {
-            if (await User.exist(id) != -1) {
-                let user = new User(Bilidata)
-                return (await user.follow(1, 11, id)) ? `关注${(await User.batchInfos([id]))[0].uname}成功` : "关注失败"
-            } else {
-                return "该用户不存在"
-            }
-        } catch (error: any) {
-            return error.message;
-        }
-    } else {
-        return "请先使用 #登陆 功能，登陆B站"
-    }
-}
-export { UserInfo, SearchUser, Follow };
+export { UserInfo, SearchUser };

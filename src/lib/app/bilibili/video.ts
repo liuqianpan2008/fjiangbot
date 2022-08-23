@@ -1,5 +1,5 @@
 import { Video } from 'bilicaptain'
-import { GroupMessageEvent, PrivateMessageEvent, segment, Sendable } from 'oicq'
+import { Client, GroupMessageEvent, PrivateMessageEvent, segment, Sendable } from 'oicq'
 import { rules } from '../plugin'
 import { readBiliCredential } from './login'
 let videos: Map<number, string> = new Map<number, string>()
@@ -22,7 +22,7 @@ async function sanlian(qq: number, bv: string) {
         return `三连出错！${error.message}`;
     }
 }
-async function Videoinfo(qq: number, bv: string): Promise<Sendable> {
+async function Videoinfo(qq: number, bv: string, Bot: Client): Promise<Sendable> {
     let Bilidata = readBiliCredential(qq)
     if (Bilidata) {
         let video = new Video(Bilidata)
@@ -40,7 +40,7 @@ async function Videoinfo(qq: number, bv: string): Promise<Sendable> {
             `标题：${r.title}`,
             segment.image(r.pic),
             `播放地址：https://www.bilibili.com/video/${r.bvid}`, "\n",
-            `分区：${r.tname}作者：${r.owner.name}`, "\n",
+            `分区：${r.tname}，作者：${r.owner.name}`, "\n",
             `简介:${subString(r.desc, 100)}`, "\n",
             `播放量：${r.stat.view},👍：${r.stat.like},👎：${r.stat.dislike},🪙：${r.stat.coin},📂：${r.stat.favorite},💬：${r.stat.reply}\n`,
         ]
