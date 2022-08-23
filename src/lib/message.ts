@@ -6,7 +6,7 @@ import { Aivoice } from "./app/Aivoice";
 import banwords from "./app/banworld";
 import bilibili from "./app/bilibili";
 import livesign from "./app/bilibili/live";
-import { UserInfo } from "./app/bilibili/user";
+import { Follow, SearchUser, UserInfo } from "./app/bilibili/user";
 import { operationVideo, sanlian, Videoinfo } from "./app/bilibili/video";
 import { groupFriends } from "./app/groupcod";
 import groupinfo from "./app/groupinfo";
@@ -131,6 +131,13 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                 })
                 rules("^#?B站信息$", item, async () => {
                     event.reply({ type: 'image', file: `base64://${await HtmlImg("sign", await UserInfo(event.sender.user_id), event.sender.user_id)}` })
+                })
+                rules("^#?搜索B站用户(.*)$", item, async () => {
+                    event.reply("搜索中....")
+                    event.reply(await SearchUser(item.text.split(new RegExp("^#?搜索B站用户(.*)$"))[1], Bot))
+                })
+                rules("^#?关注(.*)$", item, async () => {
+                    event.reply(await Follow(event.sender.user_id, Number(item.text.split(new RegExp("^#?关注B站(.*)$"))[1])))
                 })
                 // rules("#?=\d(\\+|-|\\*|\\/)\d", item, async () => {
                 //     let calculate = item.text.split(new RegExp(""))[1]
