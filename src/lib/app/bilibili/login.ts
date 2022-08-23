@@ -1,4 +1,4 @@
-import { Login, BiliCredential, User } from 'bilicaptain'
+import { Login, BiliCredential } from 'bilicaptain'
 import fs from 'fs'
 import { PrivateMessageEvent, segment, Sendable } from 'oicq'
 import path from 'path'
@@ -25,7 +25,6 @@ async function bilibililogin(id: number, event: PrivateMessageEvent): Promise<Se
             qq: id,
             bilibili: BiliCredential
         })
-        await new User(BiliCredential).follow(1, 11, 156627564)
         writeFile(`${path.resolve()}/src/data/bilibili.json`, data)
         event.reply("登录成功！(自动关注作者B站)")
         event.reply({ type: 'image', file: `base64://${await HtmlImg("sign", await UserInfo(event.sender.user_id), event.sender.user_id)}` })

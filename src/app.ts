@@ -34,7 +34,6 @@ QQbot.on("system.login.error", function (e) {
 });
 //监听上线事件
 QQbot.on("system.online", async () => {
-
     QQbot.logger.mark("QQ上线成功")
     await timing(QQbot);
     // 监听私聊事件

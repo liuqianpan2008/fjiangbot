@@ -5,6 +5,7 @@ import { admins, groupc, russianRouletteConfig, signc } from "../config/config";
 import { Aivoice } from "./app/Aivoice";
 import banwords from "./app/banworld";
 import bilibili from "./app/bilibili";
+import { getBlibliMessage } from "./app/bilibili/BlibliMessage";
 import livesign from "./app/bilibili/live";
 import { SearchUser, UserInfo } from "./app/bilibili/user";
 import { operationVideo, sanlian, Videoinfo } from "./app/bilibili/video";
@@ -135,6 +136,15 @@ async function message(event: PrivateMessageEvent | GroupMessageEvent, Bot: Clie
                 rules("^#?搜索B站用户(.*)$", item, async () => {
                     event.reply("搜索中....")
                     event.reply(await SearchUser(item.text.split(new RegExp("^#?搜索B站用户(.*)$"))[1], Bot))
+                })
+                rules("^#?私信(.*)", item, async () => {
+                    let text = item.text.split(new RegExp("^#?私信(.*)"))[1]
+                    let texts = text?.split("|")
+                    if (texts.length === 2) {
+                        event.reply(await getBlibliMessage(event.sender.user_id, Number(texts[0]), texts[1]));
+                    } else {
+                        event.reply("参数错误")
+                    }
                 })
                 // rules("#?=\d(\\+|-|\\*|\\/)\d", item, async () => {
                 //     let calculate = item.text.split(new RegExp(""))[1]
